@@ -1,2 +1,2 @@
-Skolitel - Zuzana Vazna
-Ucebna pomocka pre ucitelov matematiky na generovanie exponencialnych a logarytmickych rovnic a funkcii v podobe stranky
+Školiteľ - Zuzana Vážna
+Učebná pomôcka pre učiteľov matematiky na generovanie exponenciálnych a logaritmických rovníc a funkcií v podobe stránky
