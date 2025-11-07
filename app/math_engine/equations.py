@@ -35,10 +35,17 @@ class Method(ABC):
 
 
 def nmul(a, b):
-    return -(a * b)
+    try:
+        return -(a * b)
+    except:
+        return -(sp.symbols(f'{a}') * sp.symbols(f'{b}'))
+
 
 def ndiv(a, b):
-    return -(a / b)
+    try:
+        return -(a / b)
+    except:
+        return -(sp.symbols(f'{a}') / sp.symbols(f'{b}'))
 
 
 class Substitution(Method):
@@ -64,12 +71,13 @@ class Substitution(Method):
         
         # quadratic equation
         quad_eq = sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0)
+        # print('kvad eq:', quad_eq)
 
         # main equation
         if self.level == 'easy':
             eq = sp.Eq(self.val_a * (self.val_r ** (2*x)) + self.val_b * (self.val_r ** x), -self.val_c)
         else:
-            self.exponents = [self.val_a, self.val_b, self.val_c, self.val_r, x]
+            self.exponents = [self.val_a, self.val_b, self.val_c, self.val_r]
             self.roots = [self.val_x1, self.val_x2]
             eq = self.create_advanced()
 
@@ -77,7 +85,7 @@ class Substitution(Method):
     
     def create_advanced(self):
         x = sp.symbols('x')
-        a, b, c, r = self.exponents[:4]
+        a, b, c, r = self.exponents
 
         left_side = a * (r ** (2 * x)) + b * (r ** x)
         right_side = -c
@@ -89,22 +97,17 @@ class Substitution(Method):
 
         # Modify exponents slightly (like x → x+1 or x-2)
         shift1 = random.randint(-2, 2)
-        shift2 = random.randint(-2, 2)
-        left_side = a * (r ** (2 * x + shift1)) + b * (r ** (x + shift2))
-
+        self.val_x1, self.val_x2 = self.val_x1 - shift1, self.val_x2 - shift1
+        left_side = a * (r ** (2 * (x + shift1))) + b * (r ** (x + shift1))
+        right_side = (a * (r ** (2 * (self.val_x1 + shift1))) + b * (r ** (self.val_x1 + shift1)))
+        
         # Randomly modify both sides
         for func in modifications:
             n = random.randint(1, 5)
             if random.choice([True, False]):
                 left_side = func(left_side, n)
                 right_side = func(right_side, n)
-            else:
-                # sometimes only modify one side, to increase difficulty
-                side = random.choice(['left', 'right'])
-                if side == 'left':
-                    left_side = func(left_side, n)
-                else:
-                    right_side = func(right_side, n)
+
 
         # Optionally wrap in parentheses or scale both sides
         if random.choice([True, False]):
@@ -138,12 +141,11 @@ class Matching_bases(Method):
         else:
             self.exponents = [self.val_r, x] # not adding right side, since it is just the result of the left side
             self.roots = [self.val_x]
-            eq = self.create_advanced() # [Number, sign, number, exponent]
+            eq, self.val_x = self.create_advanced() # [Number, sign, number, exponent]
 
         return eq, [self.val_x]
     
-    def create_advanced(self):
-        pass 
+
 
     def solving_steps(self):
         return []
@@ -153,29 +155,42 @@ class Matching_bases(Method):
         modifs_base_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 4))
 
         right_exp = self.val_x
-        symb_x = sp.symbols('x')
+        symb_x = sp.symbols('x') 
+
+
         for function in modifs_exp_signs:
-            n = random.randint(1,3)
+            n = random.randint(1,3) if random.choice([True, False]) or self.val_x == 0 else self.val_x 
             if isinstance(function(right_exp, n), int) or isinstance(function(right_exp, n), float):
-                if 1000000 < abs(function(right_exp, n)) < 0.001 or int(function(right_exp, n)*1000) == function(right_exp, n)*1000:
+                if n == self.val_x:
+                    symb_x = function(symb_x, sp.symbols('x'))
+                    right_exp = function(right_exp, sp.symbols('x'))
+                    continue 
+                if int(function(right_exp, n)*1000) != function(right_exp, n)*1000 or function(right_exp, n) > 10000:
                     n = sp.symbols(f'{n}')
-            right_exp = function(right_exp, n)
             symb_x = function(symb_x, n)
-            
-        left_side = self.val_r ** symb_x
-        right_side = self.val_r ** right_exp
-        for function in modifs_base_signs:
-            n = random.randint(1,6)
-            
-            if isinstance(function(right_exp, n), int) or isinstance(function(right_exp, n), float):
-                if 1000000 < abs(function(right_exp, n)) < 0.001 or int(function(right_exp, n)*1000) == function(right_exp, n)*1000:
-                    n = sp.symbols(f'{n}')
-            right_side = function(right_side, n)
-            left_side = function(left_side, n)
+            right_exp = function(right_exp, n)
+
+
+        if isinstance(right_exp, int) or isinstance(right_exp, float) and int((self.val_r ** right_exp)*1000) != (self.val_r ** right_exp)*1000:
+                right_exp = sp.symbols(f'{right_exp}')
                 
 
+        right_side = self.val_r ** right_exp
+        left_side = self.val_r ** symb_x
+
+
+        for function in modifs_base_signs:
+            n = random.choice([1,2,4,5]) if random.choice([True, False]) else self.val_r ** self.val_x
+            if n == self.val_r ** self.val_x:
+                right_side = function(right_side, self.val_r ** sp.symbols('x'))
+                left_side = function(left_side, self.val_r ** sp.symbols('x'))
+                continue
+
+            right_side = function(right_side, n)
+            left_side = function(left_side, n)
+        
         eq = sp.Eq(left_side, right_side)
-        return eq, [self.val_x]
+        return eq, self.val_x
 
 class Logarithm(Method): # prerobit
     def create(self):
