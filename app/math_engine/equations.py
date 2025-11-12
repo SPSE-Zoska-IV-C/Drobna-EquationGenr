@@ -151,8 +151,8 @@ class Matching_bases(Method):
         return []
     
     def create_advanced(self):
-        modifs_exp_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 3))
-        modifs_base_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 4))
+        modifs_exp_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 2))
+        modifs_base_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 2))
 
         right_exp = self.val_x
         symb_x = sp.symbols('x') 
@@ -165,7 +165,7 @@ class Matching_bases(Method):
                     symb_x = function(symb_x, sp.symbols('x'))
                     right_exp = function(right_exp, sp.symbols('x'))
                     continue 
-                if int(function(right_exp, n)*1000) != function(right_exp, n)*1000 or function(right_exp, n) > 10000:
+                if int(function(right_exp, n)*1000) != function(right_exp, n)*1000 or function(right_exp, n) > 10000 or function(right_exp, n) == 0:
                     n = sp.symbols(f'{n}')
             symb_x = function(symb_x, n)
             right_exp = function(right_exp, n)
@@ -192,7 +192,7 @@ class Matching_bases(Method):
         eq = sp.Eq(left_side, right_side)
         return eq, self.val_x
 
-class Logarithm(Method): # prerobit
+class Logarithm(Method):
     def create(self):
         number_right = random.randint(10, 100)
         number_left = random.randint(10, 100)
@@ -205,107 +205,48 @@ class Logarithm(Method): # prerobit
             print('root:', log10(number_right)/log10(number_left))
 
         else:
-            self.exponents = [number_left, x, number_right] # need number right, since val_x is most likely irrational
+            self.exponents = [number_left, number_right] # need number right, since val_x is most likely irrational
             self.roots = [self.val_x]
             eq = self.create_advanced()
 
         return eq, [self.val_x]
     
     def create_advanced(self):
-        x = sp.symbols('x')
-        base, _, rhs_val = self.exponents  # base = number_left, rhs_val = number_right
+        modifs_exp_signs = random.choices([add, sub, mul], k=random.randint(1, 2))
+        modifs_base_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 2))
+        
+        left_side, right_side = self.exponents
+        symb_x = sp.symbols('x')
 
-        # --- helper functions ---
-        def clean_num(n):
-            """Return a neat, small numeric constant (no long floats or huge ints)."""
-            if n == 0:
-                return 0
+        for function in modifs_exp_signs:
+            n = random.randint(1,3)
+            if function == add:
+                if isinstance(right_side, (int, float)) and (int((right_side * (left_side ** n))*1000) != (right_side * (left_side ** n))*1000 or right_side * (left_side ** n) > 10000 or right_side * (left_side ** n) == 0 or right_side * (left_side ** n) < -10000):
+                    n = sp.symbols(f'{n}')
+                right_side = right_side * (left_side ** n)
+            elif function == sub:
+                if isinstance(right_side, (int, float)) and (int((right_side / (left_side ** n))*1000) != (right_side / (left_side ** n))*1000 or right_side / (left_side ** n) > 10000 or right_side / (left_side ** n) == 0 or right_side / (left_side ** n) < -10000):
+                    n = sp.symbols(f'{n}')
+                right_side = right_side / (left_side ** n)
+            elif function == mul:
+                if isinstance(right_side, (int, float)) and (int((right_side ** n)*1000) != (right_side ** n)*1000 or right_side ** n > 10000 or right_side ** n == 0 or right_side ** n < -10000):
+                    n = sp.symbols(f'{n}')
+                right_side = right_side ** n
 
-            # Convert float → rational
-            if isinstance(n, float):
-                f = Fraction(n).limit_denominator(10)
-                if f.denominator == 1:
-                    n = f.numerator
-                else:
-                    n = sp.Rational(f.numerator, f.denominator)
+            symb_x = function(symb_x, n)
 
-            # Cap large integers
-            if isinstance(n, int) and abs(n) > 99999:
-                n = sp.Rational(n, random.randint(50, 200))  # scale down
-            elif isinstance(n, int) and abs(n) > 20:
-                # represent as product for variety
-                k = random.randint(2, 5)
-                if n % k == 0:
-                    n = sp.Mul(k, n // k, evaluate=False)
 
-            # Cap any remaining large rationals
-            if isinstance(n, sp.Rational):
-                if abs(n.p) > 99999 or abs(n.q) > 99999:
-                    n = sp.Rational(n.p // 10, n.q)
-            return n
+        left_side = left_side ** symb_x
 
-        def limit_expr(expr):
-            """Limit numbers inside an expression to max 5 digits and simplify."""
-            # Convert plain Python numbers to SymPy
-            expr = sp.sympify(expr)
-            # Safely iterate over numeric atoms
-            for atom in list(expr.atoms(sp.Integer, sp.Float, sp.Rational)):
-                new_val = clean_num(atom)
-                if new_val != atom:
-                    expr = expr.xreplace({atom: new_val})
-            return sp.simplify(expr)
 
-        # --- create structure ---
-        left_side = base ** x
-        right_side = rhs_val
 
-        # Apply exponent shift safely
-        exp_shift = random.randint(-2, 2)
-        if exp_shift != 0:
-            left_side = base ** (x + exp_shift)
-            try:
-                scaled = rhs_val * (base ** exp_shift)
-                if abs(scaled) > 99999:
-                    scaled = scaled / random.randint(20, 100)
-                right_side = clean_num(scaled)
-            except OverflowError:
-                right_side = rhs_val
-
-        # Random arithmetic modifications
-        operations = random.sample([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 3))
-        for func in operations:
-            n = clean_num(random.uniform(0.5, 8))
-            side = random.choice(['left', 'right', 'both'])
-            if side == 'both':
-                left_side = func(left_side, n)
-                right_side = func(right_side, n)
-            elif side == 'left':
-                left_side = func(left_side, n)
-            else:
-                right_side = func(right_side, n)
-
-        # Occasionally scale both sides
-        if random.choice([True, False]):
-            k = clean_num(random.uniform(0.5, 3))
-            left_side = k * left_side
-            right_side = k * right_side
-
-        # Clean up expressions to remove large or messy numbers
-        left_side = limit_expr(left_side)
-        right_side = limit_expr(right_side)
-
-        # Final normalization — if any side still too big, scale down
-        for side in [left_side, right_side]:
-            for atom in side.atoms(sp.Integer):
-                if abs(atom) > 99999:
-                    scale = random.randint(50, 500)
-                    left_side /= scale
-                    right_side /= scale
-                    break
-
-        eq = sp.Eq(sp.simplify(left_side), sp.simplify(right_side))
+        for function in modifs_base_signs:
+            n = random.choice([1,2,4,5])
+            right_side = function(right_side, n)
+            left_side = function(left_side, n)
+        
+        eq = sp.Eq(left_side, right_side)
         return eq
-
 
     def solving_steps(self):
         return []

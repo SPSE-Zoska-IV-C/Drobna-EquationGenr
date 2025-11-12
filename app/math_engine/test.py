@@ -15,23 +15,23 @@ def test_matching_bases():
 
 def test_logarithm():
     method = Logarithm('hard')
-    print(method.equation)
+    print(method.equation) 
     print(method.roots)
     # print(sp.solve(method.equation))
 
-# for i in range(50):
-#     test_substitution()
-#     print('---')
+for i in range(50):
+    test_substitution()
+    print('---')
     
 
 print('*********************************************************************')
-for i in range(500):
+for i in range(50):
     test_matching_bases()
     print('---')
 
-# print('*********************************************************************')
-# for i in range(50):
-#     test_logarithm()
-#     print('---')
+print('*********************************************************************')
+for i in range(50):
+    test_logarithm()
+    print('---')
 
 
