@@ -1,6 +1,6 @@
 import random
 import sympy as sp
-from equations import Equation
+from app.math_engine.equations.root import Equation
 
 class Function:
     def __init__(self, 

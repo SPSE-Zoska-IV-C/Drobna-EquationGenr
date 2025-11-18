@@ -1,23 +1,23 @@
-from equations import *
+from equations.exponential import *
 
 
 def test_substitution(): # working
-    method = Substitution('hard')
+    method = Substitution('simple')
     print(method.equation)
     print(method.roots)
-    # print(sp.solve(method.equation))
+    print(method.steps)
 
 def test_matching_bases():
-    method = Matching_bases('hard')
+    method = Matching_bases('simple')
     print(method.equation)
     print(method.roots)
-    # print(sp.solve(method.equation))
+    print(method.steps)
 
 def test_logarithm():
-    method = Logarithm('hard')
+    method = Logarithm('simple')
     print(method.equation) 
     print(method.roots)
-    # print(sp.solve(method.equation))
+    print(method.steps)
 
 for i in range(50):
     test_substitution()
