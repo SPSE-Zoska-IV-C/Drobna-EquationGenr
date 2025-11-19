@@ -1,20 +1,20 @@
 from equations.exponential import *
 
 
-def test_substitution(): # working
-    method = Substitution('simple')
+def test_substitution():
+    method = Substitution('advanced')
     print(method.equation)
     print(method.roots)
     print(method.steps)
 
 def test_matching_bases():
-    method = Matching_bases('simple')
+    method = Matching_bases('advanced')
     print(method.equation)
     print(method.roots)
     print(method.steps)
 
 def test_logarithm():
-    method = Logarithm('simple')
+    method = Logarithm('advanced')
     print(method.equation) 
     print(method.roots)
     print(method.steps)
@@ -30,7 +30,7 @@ for i in range(50):
     print('---')
 
 print('*********************************************************************')
-for i in range(50):
+for i in range(500):
     test_logarithm()
     print('---')
 

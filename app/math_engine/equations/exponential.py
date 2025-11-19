@@ -199,7 +199,8 @@ class Logarithm(Method):
 
             symb_x = function(symb_x, n)
         
-        self.steps.append(sp.Eq(self.number_left, self.number_right))
+        
+        self.steps.append(sp.Eq(sp.symbols(f'{self.number_left}'), sp.symbols(f'{self.number_right}')))
 
         self.number_left = self.number_left ** symb_x
 

@@ -6,7 +6,7 @@ from fractions import Fraction
 import sympy as sp
 import random
 
-### logarytmicke vety
+### logarytmicke vety - 
 ### substitucia 
 ### uprava na rovnaky zaklad
 ### podmienky
