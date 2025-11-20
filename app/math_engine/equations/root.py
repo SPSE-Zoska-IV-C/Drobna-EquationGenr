@@ -31,4 +31,16 @@ class Method(ABC):
         return self.equation
     
 
+def nmul(a, b):
+    try:
+        return -(a * b)
+    except:
+        return sp.symbols(f'{-(sp.symbols(f'{a}') * sp.symbols(f'{b}'))}')
+
+
+def ndiv(a, b):
+    try:
+        return -(a / b)
+    except:
+        return sp.symbols(f'{-(sp.symbols(f'{a}') / sp.symbols(f'{b}'))}')
 

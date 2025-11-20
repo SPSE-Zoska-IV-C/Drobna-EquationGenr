@@ -1,4 +1,4 @@
-from equations.root import Method
+from equations.root import Method, ndiv, nmul
 
 from math import sqrt, log10
 from operator import sub, add, mul, truediv, pow
@@ -7,18 +7,7 @@ import sympy as sp
 import random
 
 
-def nmul(a, b):
-    try:
-        return -(a * b)
-    except:
-        return sp.symbols(f'{-(sp.symbols(f'{a}') * sp.symbols(f'{b}'))}')
 
-
-def ndiv(a, b):
-    try:
-        return -(a / b)
-    except:
-        return sp.symbols(f'{-(sp.symbols(f'{a}') / sp.symbols(f'{b}'))}')
 
 
 class Substitution(Method):

@@ -1,4 +1,4 @@
-from root import Method
+from root import Method, nmul, ndiv
 
 from math import sqrt, log10
 from operator import sub, add, mul, truediv, pow
@@ -68,5 +68,37 @@ class Substitution(Method):
         self.steps.append(self.equation)
 
     def create_advanced(self):
-        pass
+        x = sp.symbols('x')
+
+        left_side = self.val_a * (sp.log(x, sp.symbols(f'{self.val_r}')) ** 2) + self.val_b * sp.log(x, sp.symbols(f'{self.val_r}'))
+        right_side = -self.val_c
+        self.steps.append(sp.Eq(left_side, right_side))
+
+        modifications = random.sample([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 4))
+        
+        original_rs = right_side
+
+        # Randomly modify both sides
+        for func in modifications:
+            n = random.randint(2, 5)
+            if random.choice([True, False]):
+                if isinstance(func(right_side, n), (int, float)):
+                    if func(right_side, n) >= 10000 or func(right_side, n) == 0 or func(right_side, n) <= -10000 or int(func(right_side, n)*1000) != func(right_side, n)*1000:
+                        n = sp.symbols(f'{n}')
+                left_side = func(left_side, n)
+                right_side = func(right_side, n)
+
+        if right_side != original_rs:
+            self.steps.append(sp.Eq(left_side, right_side))
+
+
+        # Optionally wrap in parentheses or scale both sides
+        if random.choice([True, False]):
+            scale = random.choice([2, 3, 0.5, -1])
+            left_side = scale * left_side
+            right_side = scale * right_side
+            self.steps.append(sp.Eq(left_side, right_side))
+
+        self.equation = sp.Eq(left_side, right_side)
+
 

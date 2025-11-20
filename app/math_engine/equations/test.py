@@ -7,7 +7,7 @@ def test_mixed_methods():
     print(method.steps)
 
 def test_substitution():
-    method = Substitution('simple')
+    method = Substitution('advanced')
     print(method.equation)
     print(method.roots)
     print(method.steps)
