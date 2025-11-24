@@ -1,37 +1,37 @@
-from equations import *
+from equations.exponential import *
 
 
 def test_substitution():
-    method = Substitution('hard')
-    print(method.get_roots())
-    print(method.get_equation())
+    method = Substitution('advanced')
+    print(method.equation)
+    print(method.roots)
+    print(method.steps)
 
 def test_matching_bases():
-    method = Matching_bases('hard')
-    print(method.get_roots())
-    print(method.get_equation())
+    method = Matching_bases('advanced')
+    print(method.equation)
+    print(method.roots)
+    print(method.steps)
 
 def test_logarithm():
-    method = Logarithm('hard')
-    print(method.get_roots())
-    print(method.get_equation())
+    method = Logarithm('advanced')
+    print(method.equation) 
+    print(method.roots)
+    print(method.steps)
 
-# for i in range(50):
-#     test_substitution()
-#     print('---')
+for i in range(50):
+    test_substitution()
+    print('---')
+    
 
 print('*********************************************************************')
 for i in range(50):
     test_matching_bases()
     print('---')
 
-# print('*********************************************************************')
-# for i in range(50):
-#     test_logarithm()
-#     print('---')
+print('*********************************************************************')
+for i in range(500):
+    test_logarithm()
+    print('---')
 
 
-# for i in range(400):
-#     if 16**(i/100) == int(16**(i/100)):
-#         print('exp',(i/100))
-#         print('power',16**(i/100))
