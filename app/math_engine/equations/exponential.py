@@ -1,13 +1,10 @@
-from equations.root import Method, ndiv, nmul
+from root import Method, ndiv, nmul
 
 from math import sqrt, log10
 from operator import sub, add, mul, truediv, pow
 from fractions import Fraction
 import sympy as sp
 import random
-
-
-
 
 
 class Substitution(Method):
@@ -43,6 +40,9 @@ class Substitution(Method):
         elif self.level == 'advanced':
             self.create_advanced()
     
+    def create_function_coefficients(self):
+        self.func_coefs = [self.val_a, self.val_b, self.val_c, self.val_r]
+
     def create_simple(self):
         self.equation = sp.Eq(self.val_a * (self.val_r ** (2*sp.symbols('x'))) + self.val_b * (self.val_r ** sp.symbols('x')), -self.val_c)
         self.steps.append(self.equation)
@@ -94,6 +94,9 @@ class Matching_bases(Method):
             self.create_simple()
         elif self.level == 'advanced':
             self.create_advanced()
+    
+    def create_function_coefficients(self):
+        self.func_coefs = [self.val_r]
     
     def create_simple(self):
         if self.val_x < 0:
@@ -159,6 +162,9 @@ class Logarithm(Method):
 
         elif self.level == 'advanced':
             self.create_advanced()
+
+    def create_function_coefficients(self):
+        self.func_coefs = [self.number_left]
     
     def create_simple(self):
         x = sp.symbols('x')

@@ -1,14 +1,9 @@
 from root import Method, nmul, ndiv
 
-from math import sqrt, log10
-from operator import sub, add, mul, truediv, pow
-from fractions import Fraction
+from operator import sub, add, mul, truediv
 import sympy as sp
 import random
 
-### logaritmicke vety 
-### uprava na rovnaky zaklad
-### podmienky
 
 class Mixed_methods(Method):
     def create(self):
@@ -22,6 +17,10 @@ class Mixed_methods(Method):
             self.create_simple()
         elif self.level == 'advanced':
             self.create_advanced()
+    
+    
+    def create_function_coefficients(self):
+        self.func_coefs = [self.val_r, self.val_log]
 
     def create_simple(self):
         self.equation = sp.Eq(sp.log(sp.symbols('x'), self.val_r), self.val_log)
@@ -101,14 +100,13 @@ class Mixed_methods(Method):
         self.steps.append(self.equation)
 
 
-
 class Substitution(Method):
     def create(self):
         self.val_r = random.randint(2, 11)  # root of the logarithm
         self.val_log1 = random.randint(0, 6) # main logarithm of the equation
         self.val_log2 = random.randint(0, 6) # main logarithm of the equation
-        self.val_x1 = self.val_r ** self.val_log1 # 
-        self.val_x2 = self.val_r ** self.val_log2 # 
+        self.val_x1 = self.val_r ** self.val_log1
+        self.val_x2 = self.val_r ** self.val_log2
 
 
         self.val_q = -self.val_log1 # coefficient of the equation

@@ -15,6 +15,10 @@ class Method(ABC):
     @abstractmethod
     def create(self):
         '''manages creation of equation, its roots and solving steps based on level, saved in self'''
+
+    @abstractmethod
+    def create_function_coefficients(self):
+        '''Creates function coefficients, saved in self'''
         
     @abstractmethod
     def create_simple(self):
