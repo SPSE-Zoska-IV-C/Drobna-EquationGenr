@@ -9,7 +9,7 @@ class Method(ABC):
         self.equation = None
         self.roots = []
         self.steps = []
-
+        self.func_coefs = dict()
         self.create() # self.equation, self.roots, self.steps
 
     @abstractmethod

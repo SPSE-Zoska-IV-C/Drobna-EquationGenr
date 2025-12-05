@@ -1,5 +1,6 @@
-import logarithmic as log
-import exponential as ex
+import equations.logarithmic as log
+import equations.exponential as ex
+import functions.exponential as func_ex
 
 ### Logarithms ###
 def test_mixed_methods_logarithm():
@@ -21,30 +22,39 @@ def test_substitution_exponential():
     print(method.equation)
     print(method.roots)
     print(method.steps)
+    method.create_function_coefficients()
+    print(method.func_coefs)
+    func_ex.Exponential(method.func_coefs).get_parameters()
 
 def test_matching_bases_exponential():
     method = ex.Matching_bases('advanced')
     print(method.equation)
     print(method.roots)
     print(method.steps)
+    method.create_function_coefficients()
+    print(method.func_coefs)
+    func_ex.Exponential(method.func_coefs).get_parameters()
 
 def test_logarithm_exponential():
     method = ex.Logarithm('advanced')
     print(method.equation) 
     print(method.roots)
     print(method.steps)
+    method.create_function_coefficients()
+    print(method.func_coefs)
+    func_ex.Exponential(method.func_coefs).get_parameters()
 
-
-for i in range(50):
-    test_mixed_methods_logarithm()
-    print('---')
-
-print('*********************************************************************')
-for i in range(50):
-    test_substitution_logarithm()
-    print('---')
 
 # for i in range(50):
+#     test_mixed_methods_logarithm()
+#     print('---')
+
+# print('*********************************************************************')
+# for i in range(50):
+#     test_substitution_logarithm()
+#     print('---')
+
+# for i in range(50): 
 #     test_substitution_exponential()
 #     print('---')
     
@@ -54,8 +64,9 @@ for i in range(50):
 #     test_matching_bases_exponential()
 #     print('---')
 
+
 # print('*********************************************************************')
-# for i in range(500):
+# for i in range(50):
 #     test_logarithm_exponential()
 #     print('---')
 

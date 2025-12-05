@@ -1,4 +1,4 @@
-from root import Method, ndiv, nmul
+from equations.root import Method, ndiv, nmul
 
 from math import sqrt, log10
 from operator import sub, add, mul, truediv, pow
@@ -40,8 +40,9 @@ class Substitution(Method):
         elif self.level == 'advanced':
             self.create_advanced()
     
-    def create_function_coefficients(self):
-        self.func_coefs = [self.val_a, self.val_b, self.val_c, self.val_r]
+    def create_function_coefficients(self): # a*b**x + k ---> a = a*(r**x) + b, b**x = r**x, k = c
+        # self.func_coefs.update({'val_a': (self.val_a*(self.val_r**sp.symbols('x')) + self.val_b), 'val_bx': (self.val_r**sp.symbols('x')), 'val_k': self.val_c, 'val_px': None, 'val_py': None})
+        self.func_coefs = None
 
     def create_simple(self):
         self.equation = sp.Eq(self.val_a * (self.val_r ** (2*sp.symbols('x'))) + self.val_b * (self.val_r ** sp.symbols('x')), -self.val_c)
@@ -85,7 +86,7 @@ class Substitution(Method):
 
 class Matching_bases(Method):
     def create(self):
-        self.val_r = random.randint(2, 11)  # root of the exponent x
+        self.val_r = random.randint(2, 10)  # root of the exponent x
         self.val_x = random.randint(-3, 5) # main x of the equation
 
         self.roots = [self.val_x]
@@ -95,9 +96,9 @@ class Matching_bases(Method):
         elif self.level == 'advanced':
             self.create_advanced()
     
-    def create_function_coefficients(self):
-        self.func_coefs = [self.val_r]
-    
+    def create_function_coefficients(self): # a*b**x + k
+        self.func_coefs.update({'val_a': 1, 'val_bx': self.val_r**sp.symbols('x'), 'val_k': sp.Rational(-(self.val_r**(self.val_x))).limit_denominator(1000), 'val_px': self.val_x, 'val_py': sp.Rational(1 - (self.val_r**(self.val_x))).limit_denominator(1000)})
+
     def create_simple(self):
         if self.val_x < 0:
             self.val_t = sp.symbols(f'1/{self.val_r ** abs(self.val_x)}')
@@ -151,8 +152,8 @@ class Matching_bases(Method):
 
 class Logarithm(Method):
     def create(self):
-        self.number_right = random.randint(10, 100)
-        self.number_left = random.randint(10, 100)
+        self.func_n_right = self.number_right = random.randint(10, 100)
+        self.func_n_left = self.number_left = random.randint(10, 100)
         self.val_x = log10(self.number_right)/log10(self.number_left)
 
         self.roots = [self.val_x]
@@ -163,8 +164,8 @@ class Logarithm(Method):
         elif self.level == 'advanced':
             self.create_advanced()
 
-    def create_function_coefficients(self):
-        self.func_coefs = [self.number_left]
+    def create_function_coefficients(self):# a*b**x + k
+        self.func_coefs.update({'val_a': 1, 'val_bx': self.func_n_left**sp.symbols('x'), 'val_k': -self.func_n_right, 'val_px': sp.log(sp.symbols(f'{self.func_n_right}'), self.func_n_left), 'val_py': 1 - self.func_n_right})
     
     def create_simple(self):
         x = sp.symbols('x')

@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 
 class Function(ABC):
-    @abstractmethod
     def __init__(self, coefficients=None):
-        self.coefficiens = coefficients if not None else self.create_coefficiens()
+        print(coefficients)
+        self.coefficiens = coefficients if coefficients is not None else self.create_coefficiens()
+        print('init ', self.coefficiens)
+        self.parameters = self.get_parameters()
 
     @abstractmethod
     def create_coefficiens(self):
@@ -13,12 +15,7 @@ class Function(ABC):
     def create_graph(self):
         '''Creates graph of function, saved in self'''
 
+    @abstractmethod
     def get_parameters(self):
         '''Returns list of parameters of function, saved in self'''
 
-# obor hodnot
-# definicny obor
-# priesecniky
-# parametre
-# graf - responzivny, vypocet parametrov ovplyvnujucich graf
-# inverzna funkcia - instancia funkcie
