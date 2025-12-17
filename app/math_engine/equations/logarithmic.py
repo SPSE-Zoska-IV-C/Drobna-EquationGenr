@@ -1,5 +1,4 @@
 from equations.root import Method, nmul, ndiv
-
 from operator import sub, add, mul, truediv
 import sympy as sp
 import random
@@ -11,6 +10,11 @@ class Mixed_methods(Method):
         self.val_log = random.randint(1, 6) # main logarithm of the equation
         self.val_x = self.val_r ** self.val_log
 
+        print('val_r:', self.val_r)
+        print('val_log:', self.val_log)
+        print('val_x:', self.val_x)
+
+
         self.roots = [self.val_x]
 
         if self.level == 'simple':
@@ -19,8 +23,16 @@ class Mixed_methods(Method):
             self.create_advanced()
     
     
-    def create_function_coefficients(self):
-        self.func_coefs.update({'val_log': self.val_log, 'val_r': self.val_r})
+    def create_function_coefficients(self): # prepisat px a py
+        # print(sp.log(0, self.val_r) - self.val_log)
+        self.func_coefs.update({'val_a': 1, 
+                                'val_b': self.val_r,
+                                'val_n': 1,
+                                'val_v': self.val_log, 
+                                'val_k': 0,
+                                'val_px': self.val_x,
+                                'val_py': None
+                                })
 
     def create_simple(self):
         self.equation = sp.Eq(sp.log(sp.symbols('x'), self.val_r), self.val_log)
@@ -133,7 +145,7 @@ class Substitution(Method):
             self.create_advanced()
 
     def create_function_coefficients(self):
-        self.func_coefs.update({'val_a': self.val_a, 'val_b': self.val_b, 'val_c': self.val_c, 'val_r': self.val_r})
+        self.func_coefs = None
 
     def create_simple(self):
         self.equation = sp.Eq(self.val_a * (sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')) ** 2) + self.val_b * sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')) , - self.val_c)

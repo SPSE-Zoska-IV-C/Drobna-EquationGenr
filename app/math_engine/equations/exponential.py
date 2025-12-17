@@ -40,8 +40,7 @@ class Substitution(Method):
         elif self.level == 'advanced':
             self.create_advanced()
     
-    def create_function_coefficients(self): # a*b**x + k ---> a = a*(r**x) + b, b**x = r**x, k = c
-        # self.func_coefs.update({'val_a': (self.val_a*(self.val_r**sp.symbols('x')) + self.val_b), 'val_bx': (self.val_r**sp.symbols('x')), 'val_k': self.val_c, 'val_px': None, 'val_py': None})
+    def create_function_coefficients(self):
         self.func_coefs = None
 
     def create_simple(self):
@@ -97,7 +96,12 @@ class Matching_bases(Method):
             self.create_advanced()
     
     def create_function_coefficients(self): # a*b**x + k
-        self.func_coefs.update({'val_a': 1, 'val_bx': self.val_r**sp.symbols('x'), 'val_k': sp.Rational(-(self.val_r**(self.val_x))).limit_denominator(1000), 'val_px': self.val_x, 'val_py': sp.Rational(1 - (self.val_r**(self.val_x))).limit_denominator(1000)})
+        self.func_coefs.update({'val_a': 1, 
+                                'val_bx': self.val_r**sp.symbols('x'), 
+                                'val_k': sp.Rational(-(self.val_r**(self.val_x))).limit_denominator(1000), 
+                                'val_px': self.val_x, 
+                                'val_py': sp.Rational(1 - (self.val_r**(self.val_x))).limit_denominator(1000), 
+                                'val_b': self.val_r})
 
     def create_simple(self):
         if self.val_x < 0:
@@ -165,7 +169,12 @@ class Logarithm(Method):
             self.create_advanced()
 
     def create_function_coefficients(self):# a*b**x + k
-        self.func_coefs.update({'val_a': 1, 'val_bx': self.func_n_left**sp.symbols('x'), 'val_k': -self.func_n_right, 'val_px': sp.log(sp.symbols(f'{self.func_n_right}'), self.func_n_left), 'val_py': 1 - self.func_n_right})
+        self.func_coefs.update({'val_a': 1, 
+                                'val_bx': self.func_n_left**sp.symbols('x'), 
+                                'val_k': -self.func_n_right, 
+                                'val_px': sp.log(sp.symbols(f'{self.func_n_right}'), self.func_n_left), 
+                                'val_py': 1 - self.func_n_right, 
+                                'val_b': self.func_n_left})
     
     def create_simple(self):
         x = sp.symbols('x')
