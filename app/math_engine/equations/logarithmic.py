@@ -10,11 +10,6 @@ class Mixed_methods(Method):
         self.val_log = random.randint(1, 6) # main logarithm of the equation
         self.val_x = self.val_r ** self.val_log
 
-        print('val_r:', self.val_r)
-        print('val_log:', self.val_log)
-        print('val_x:', self.val_x)
-
-
         self.roots = [self.val_x]
 
         if self.level == 'simple':
@@ -23,8 +18,7 @@ class Mixed_methods(Method):
             self.create_advanced()
     
     
-    def create_function_coefficients(self): # prepisat px a py
-        # print(sp.log(0, self.val_r) - self.val_log)
+    def create_function_coefficients(self):
         self.func_coefs.update({'val_a': 1, 
                                 'val_b': self.val_r,
                                 'val_n': 1,

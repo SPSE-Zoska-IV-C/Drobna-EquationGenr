@@ -2,10 +2,9 @@ from abc import ABC, abstractmethod
 
 class Function(ABC):
     def __init__(self, coefficients=None):
-        print(coefficients)
-        self.coefficients = coefficients if coefficients is not None else self.create_coefficients()
-        print('init ', self.coefficients)
-        self.parameters = self.get_parameters()
+        self.coefficients = coefficients
+        self.create_coefficients()
+        self.get_parameters()
 
     @abstractmethod
     def create_coefficients(self):
