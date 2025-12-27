@@ -97,11 +97,12 @@ class Matching_bases(Method):
     
     def create_function_coefficients(self): # a*b**x + k
         self.func_coefs.update({'val_a': 1, 
-                                'val_bx': self.val_r**sp.symbols('x'), 
+                                'val_b': self.val_r,
+                                'val_v': 0,
+                                'val_n': 1,
                                 'val_k': sp.Rational(-(self.val_r**(self.val_x))).limit_denominator(1000), 
                                 'val_px': self.val_x, 
-                                'val_py': sp.Rational(1 - (self.val_r**(self.val_x))).limit_denominator(1000), 
-                                'val_b': self.val_r})
+                                'val_py': sp.Rational(1 - (self.val_r**(self.val_x))).limit_denominator(1000)})
 
     def create_simple(self):
         if self.val_x < 0:
@@ -170,7 +171,8 @@ class Logarithm(Method):
 
     def create_function_coefficients(self):# a*b**x + k
         self.func_coefs.update({'val_a': 1, 
-                                'val_bx': self.func_n_left**sp.symbols('x'), 
+                                'val_n': 1,
+                                'val_v': 0,
                                 'val_k': -self.func_n_right, 
                                 'val_px': sp.log(sp.symbols(f'{self.func_n_right}'), self.func_n_left), 
                                 'val_py': 1 - self.func_n_right, 

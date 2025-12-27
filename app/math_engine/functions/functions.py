@@ -22,25 +22,25 @@ class Exponential(Function):
         
         
         self.coefficients.update({'val_a': self.mul_base, 
-                                 'val_bx': self.val_r**(self.mul_exp*sp.symbols('x') + self.sum_exp), 
-                                 'val_k': self.sum_base, 
-                                 'dec_poss': True,   
+                                 'val_b': self.val_r, 
+                                 'val_v': self.sum_exp,
+                                 'val_n': self.mul_exp,
+                                 'val_k': self.sum_base,  
                                  'val_px': (sp.log((0 - self.sum_base)/self.mul_base, self.val_r) - self.sum_exp) /self.mul_exp if -self.sum_base > 0 else None,
                                  'val_py': self.mul_base*(self.val_r**(self.sum_exp)) + self.sum_base})
 
-        return self.coefficients
         # a*b**x + k
 
     def get_parameters(self):
         self.parameters = dict()
-        self.parameters.update({'formula': sp.Eq(sp.symbols('f(x)'), self.coefficients['val_a'] * self.coefficients['val_bx'] + self.coefficients['val_k']),
+        self.parameters.update({'formula': sp.Eq(sp.symbols('f(x)'), self.coefficients['val_a'] * self.coefficients['val_b']**(self.coefficients['val_n']*sp.symbols('x') + self.coefficients['val_v']) + self.coefficients['val_k']),
                                 'D(f)': ('minus infinity', 'infinity'),
                                 'H(f)': (0 + self.coefficients['val_k'], 'infinity'),
                                 'Px': (self.coefficients['val_px'], 0),
                                 'Py': (0, self.coefficients['val_py']),
                                 'parity': 'none',
                                 'boundaries': (0 + self.coefficients['val_k'], None), 
-                                'monotony': 'decreasing' if 'dec_poss' in self.coefficients and self.val_r < 1 else 'increasing',
+                                'monotony': 'decreasing' if self.coefficients['val_b'] < 1 else 'increasing',
                                 'symetheticity': 'asymetric'})
         print(self.parameters)
     
@@ -49,25 +49,9 @@ class Exponential(Function):
         pass
 
     def get_inverse(self):
-        self.inverse_coefficients = dict()
-        if 'dec_poss' in self.coefficients:
-            self.inverse_coefficients.update({'val_a': self.coefficients['val_a'], 
-                                    'val_k': self.coefficients['val_k'],
-                                    'val_b': self.val_r,
-                                    'val_px': (self.coefficients['val_py'][1], self.coefficients['val_py'][0]),
-                                    'val_py': (self.coefficients['val_px'][1], self.coefficients['val_px'][0]), 
-                                    'val_v': self.sum_exp,
-                                    'val_n': self.mul_exp})
-            
-        else:
-            self.inverse_coefficients.update({'val_a': self.coefficients['val_a'], 
-                                    'val_k': self.coefficients['val_k'],
-                                    'val_b': self.coefficients['val_b'],
-                                    'val_px': (self.coefficients['val_py'][1], self.coefficients['val_py'][0]),
-                                    'val_py': (self.coefficients['val_px'][1], self.coefficients['val_px'][0]), 
-                                    'val_v': 0,
-                                    'val_n': 1})
-
+        self.inverse_coefficients = self.coefficients
+        self.inverse_coefficients.update({'val_px': self.coefficients['val_py'],
+                                          'val_py': self.coefficients['val_px']})
         return Logarithmic(self.inverse_coefficients)
     
 # (Logb((X – k)/a) – v) /n
@@ -116,12 +100,10 @@ class Logarithmic(Function):
     def create_graph(self):
         pass
 
-    def get_inverse(self):
-        self.inverse_coefficients = dict()
-        self.inverse_coefficients.update({'val_a': self.coefficients['val_a'], 
-                                 'val_bx': self.coefficients['val_b']**(self.coefficients['val_n']*sp.symbols('x') + self.coefficients['val_v']), 
-                                 'val_k': self.coefficients['val_k'],
-                                 'val_px': self.coefficients['val_py'],
-                                 'val_py': self.coefficients['val_px']})
-        return Exponential(self.inverse_coefficients)
+
+    # def get_inverse(self):
+    #     self.inverse_coefficients = self.coefficients
+    #     self.inverse_coefficients.update({'val_px': self.coefficients['val_py'],
+    #                                       'val_py': self.coefficients['val_px']})
+    #     return Exponential(self.inverse_coefficients)
         
