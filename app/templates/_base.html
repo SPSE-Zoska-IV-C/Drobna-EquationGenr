@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}ExpoLoGen{% endblock %}</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Sidebar toggle -->
+<input type="checkbox" id="sidebar-toggle">
+
+<!-- Overlay -->
+<label for="sidebar-toggle" id="overlay"></label>
+
+<!-- Sidebar -->
+<div id="sidebar" class="{{ active }}">
+  <p class="sidebar-item {{ active }}" >
+    <a href="{{ url_for('equations') }}">Equations</a>
+  </p>
+
+  <div class="generate">
+    <p class="sidebar-item {{ active }}" >Generate</p>
+    <div class="generate-submenu">
+      <p class="submenu-item ">
+        <a href="{{ url_for('generate_equations') }}">Equations</a>       
+      </p>
+
+      <p class="submenu-item {{ active }}">
+        <a href="{{ url_for('generate_functions') }}">Functions</a>
+      </p>
+
+    </div>
+  </div>
+
+  <p class="sidebar-item {{ active }}" >
+    <a href="{{ url_for('functions') }}">Functions</a>
+  </p>
+</div>
+
+<!-- Header -->
+<div class="header {{ active }}">
+    <div class="left">
+      <label for="sidebar-toggle" class="sidebar-icon">☰</label>
+    </div>
+  
+    <div class="center">
+      <p class="title">
+        {% if active == "equations" %}Equations
+        {% elif active == "functions" %}Functions
+        {% elif active == "generate" %}Generate
+        {% else %}ExpoLoGen{% endif %}
+      </p>
+    </div>
+  
+    <div class="right">
+      <p class="hover-item">Export to PDF</p>
+      <div class="profile-icon">👤</div>
+    </div>
+  </div>
+  
+<!-- Main content -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

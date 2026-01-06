@@ -1,0 +1,339 @@
+/* ---------- RESET ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+
+  
+  .sidebar-icon {
+    color: #E9EDDE;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  #sidebar-toggle {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  #sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background: #E9EDDE;
+    transition: left 0.3s ease;
+    z-index: 20;
+  }
+  
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+  }
+  
+  #sidebar-toggle:checked ~ #sidebar {
+    left: 0;
+  }
+  
+  #sidebar-toggle:checked ~ #overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+
+
+  /* ---------- HEADER FIX ---------- */
+
+  /* Default header */
+.header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    position: relative;
+    z-index: 30;
+    background-color: #d6b065; /* default */
+}
+
+/* Header by route */
+.header.equations {
+    background-color: #52682D;
+}
+
+.header.functions {
+    background-color: #052f5f;
+}
+
+.header.generate {
+    background-color: #d6b065;
+}
+
+  
+  .header .left,
+  .header .center,
+  .header .right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header .left {
+    width: 60px;
+  }
+  
+  .header .center {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .header .right {
+    gap: 16px;
+  }
+  
+  /* ---------- HEADER ITEMS ---------- */
+  .title {
+    color: #E9EDDE;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .hover-item {
+    color: #E9EDDE;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .hover-item:hover {
+    background-color: #E9EDDE;
+    color: #52682D;
+  }
+  
+  .profile-icon {
+    font-size: 20px;
+    color: black; /* as requested earlier */
+  }
+  
+  /* ---------- SIDEBAR CONTENT FIX ---------- */
+  #sidebar {
+    padding-top: 80px;
+  }
+  
+  #sidebar a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+
+
+  /* ---------- SIDEBAR ITEMS ---------- */
+  .sidebar-item {
+    color: #52682D;
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+
+  .sidebar-item.functions {
+    color: #052f5f;
+ }
+
+  .sidebar-item.generate {
+      color: #d6b065;
+  }
+  
+  /* Hover colors by route */
+  #sidebar.equations .sidebar-item:hover {
+    background-color: #52682D;
+    color: #E9EDDE;
+  }
+  
+  #sidebar.functions .sidebar-item:hover {
+    background-color: #052f5f;
+    color: #E9EDDE;
+  }
+  
+  #sidebar.generate .sidebar-item:hover {
+    background-color: #d6b065;
+    color: #52682D;
+  }
+  
+
+
+
+  /* ---------- GENERATE SUBMENU ---------- */
+  .generate {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .generate-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .generate:hover .generate-submenu {
+    max-height: 120px;
+  }
+  
+  .submenu-item {
+    padding: 10px 40px;
+    color: #d6b065;
+    cursor: pointer;
+  }
+  
+  .submenu-item:hover {
+    background-color: #d6b065;
+  }
+  
+  /* ---------- MAIN ---------- */
+  main {
+    padding-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  
+  /* ---------- GENERATE SUBMENU ---------- */
+  .generate {
+    position: relative;
+  }
+  
+  .generate-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .generate:hover .generate-submenu {
+    max-height: 100px;
+  }
+  
+  .submenu-item {
+    padding: 10px 30px;
+    color: #d6b065;
+  }
+  
+  .submenu-item:hover {
+    background-color: #d6b065;
+    color: #E9EDDE;
+  }
+  
+  /* ---------- OVERLAY ---------- */
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 15;
+  }
+  
+  
+  /* ---------- EQUATIONS ---------- */
+  .todays-equations,
+  .history-equations {
+    padding: 30px;
+  }
+  
+  .equations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .eq-card {
+    background-color: #52682D;
+    color: #E9EDDE;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .eq-card summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  
+  .eq-card summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .eq-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .eq-main {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .eq-text {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .eq-meta {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  
+  .arrow::before {
+    content: "v";
+  }
+  
+  .eq-card[open] .arrow::before {
+    content: "^";
+  }
+  
+  .eq-details {
+    background-color: #E9EDDE;
+    color: #52682D;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .function-btn {
+    align-self: flex-end;
+    padding: 6px 12px;
+    background-color: #52682D;
+    color: #E9EDDE;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .function-btn:hover {
+    background-color: #E9EDDE;
+    color: #52682D;
+  }
+  
+  /* ---------- HISTORY ---------- */
+  .history-equations {
+    border-top: 2px solid #E9EDDE;
+    margin-top: 40px;
+  }
+  
+
+  .hidden {
+    display: none;
+  }
+  
+  .graph-img {
+    margin-top: 1rem;
+    max-width: 100%;
+  }
+  

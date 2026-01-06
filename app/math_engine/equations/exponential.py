@@ -1,4 +1,4 @@
-from equations.root import Method, ndiv, nmul
+from math_engine.equations.root import Method, ndiv, nmul
 
 from math import sqrt, log10
 from operator import sub, add, mul, truediv, pow
@@ -81,6 +81,9 @@ class Substitution(Method):
 
         self.equation = sp.Eq(left_side, right_side)
 
+    def get_equation(self):
+        return sp.latex(self.equation)
+
 
 
 class Matching_bases(Method):
@@ -97,7 +100,8 @@ class Matching_bases(Method):
     
     def create_function_coefficients(self): # a*b**x + k
         self.func_coefs.update({'val_a': 1, 
-                                'val_b': self.val_r,
+                                'val_bn': self.val_r,
+                                'val_bd': 1,
                                 'val_v': 0,
                                 'val_n': 1,
                                 'val_k': sp.Rational(-(self.val_r**(self.val_x))).limit_denominator(1000), 
@@ -155,6 +159,9 @@ class Matching_bases(Method):
         self.steps.append(sp.Eq(left_side, right_side))
         self.equation = sp.Eq(left_side, right_side)
 
+    def get_equation(self):
+        return sp.latex(self.equation)
+
 class Logarithm(Method):
     def create(self):
         self.func_n_right = self.number_right = random.randint(10, 100)
@@ -176,7 +183,8 @@ class Logarithm(Method):
                                 'val_k': -self.func_n_right, 
                                 'val_px': sp.log(sp.symbols(f'{self.func_n_right}'), self.func_n_left), 
                                 'val_py': 1 - self.func_n_right, 
-                                'val_b': self.func_n_left})
+                                'val_bn': self.func_n_left,
+                                'val_bd': 1})
     
     def create_simple(self):
         x = sp.symbols('x')
@@ -218,4 +226,7 @@ class Logarithm(Method):
         
         self.steps.append(sp.Eq(self.number_left, self.number_right))
         self.equation = sp.Eq(self.number_left, self.number_right)
+
+    def get_equation(self):
+        return sp.latex(self.equation)
 

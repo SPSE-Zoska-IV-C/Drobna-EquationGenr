@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+
+{% block header_title %}
+<p class="title">Functions</p>
+{% endblock %}
+
+{% block content %}
+
+<div class="todays-content">
+  <h2>Today's Functions</h2>
+  <div class="content-list">
+    {% for f in todays_functions %}
+    <details class="ct-card">
+      <summary class="ct-summary">
+        <div class="ct-main">
+          <p class="ct-text">$$ {{ f.get_latex_formula() }} $$</p>
+          <p class="ct-meta">Type: {{ f.get_type() }}</p>
+          <a href="{{ url_for('function_details', function_id=f.id) }}">Details</a>
+        </div>
+      </summary>
+
+      </div>
+    </details>
+    {% else %}
+      <p>No functions generated today.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="history-content">
+  <h2>History</h2>
+  <div class="content-list">
+    {% for f in history_functions %}
+    <details class="ct-card">
+      <summary class="ct-summary">
+        <div class="ct-main">
+          <p class="ct-text">$$ {{ f.get_latex_formula() }} $$</p>
+          <p class="ct-meta">Type: {{ f.get_type() }}</p>
+          <a href="{{ url_for('function_details', function_id=f.id) }}">Details</a>
+        </div>
+      </summary>
+      </div>
+    </details>
+    {% else %}
+      <p>No previous functions.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

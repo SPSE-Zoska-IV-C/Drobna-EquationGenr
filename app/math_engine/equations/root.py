@@ -31,8 +31,12 @@ class Method(ABC):
     def get_roots(self):
         return self.roots
     
+    @abstractmethod
     def get_equation(self):
-        return self.equation
+        '''Returns equation in latex format'''
+    
+    def get_steps(self):
+        return self.steps
     
 
 def nmul(a, b):

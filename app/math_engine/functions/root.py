@@ -11,14 +11,33 @@ class Function(ABC):
         '''Creates function coefficients, saved in self'''
 
     @abstractmethod
-    def create_graph(self):
+    def get_graph(self):
         '''Creates graph of function, saved in self'''
 
     @abstractmethod
     def get_parameters(self):
-        '''Returns list of parameters of function, saved in self'''
+        '''Returns list of parameters of function'''
 
     @abstractmethod
     def get_inverse(self):
-        '''Returns inverse of function, saved in self'''
-        return Function
+        '''Returns inverse of function'''
+
+    @abstractmethod
+    def get_latex_formula(self):
+        '''Returns latex formula of function'''
+    
+    def get_coefficients(self):
+        return self.coefficients
+    
+    def get_parameters(self):
+        return self.parameters
+    
+
+
+    def get_graph(self):
+        pass
+
+    def get_type(self):
+        return self.type
+
+    

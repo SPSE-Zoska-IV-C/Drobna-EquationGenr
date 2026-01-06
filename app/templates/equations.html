@@ -1,0 +1,74 @@
+{% extends "_base.html" %}
+
+{% block header_title %}
+<p class="title">Equations</p>
+{% endblock %}
+
+{% block content %}
+
+{% print(equations) %}
+
+<!-- TODAY -->
+<div class="todays-content">
+  <h2>Today's Equations</h2>
+
+  <div class="content-list">
+    {% for i in todays_equations %}
+    <details class="ct-card">
+      <summary class="ct-summary">
+        <div class="ct-main">
+          <p class="ct-text">{{ i.equation }}</p>
+          <p class="ct-meta">Level: {{ i.level }}</p>
+          <p class="ct-meta">Type: {{ i.type }}</p>
+        </div>
+        <span class="arrow"></span>
+      </summary>
+
+      <div class="ct-details">
+        <p><strong>Roots:</strong> {{ i.roots }}</p>
+        <p><strong>Steps:</strong></p>
+        <p>{{ i.steps }}</p>
+
+        <p class="transtformation-btn">Function</p>
+      </div>
+    </details>
+    {% else %}
+      <p>No equations generated today.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="history-content">
+  <h2>History</h2>
+
+  <div class="content-list">
+    {% for i in history_equations %}
+    <details class="ct-card">
+      <summary class="ct-summary">
+        <div class="ct-main">
+          <p class="ct-text">{{ i.equation }}</p>
+          <p class="ct-meta">
+            Level: {{ i.level }} ·
+            Type: {{ i.type }} ·
+            {{ i.day_generated.strftime('%Y-%m-%d') }}
+          </p>
+        </div>
+        <span class="arrow"></span>
+      </summary>
+
+      <div class="ct-details">
+        <p><strong>Roots:</strong> {{ i.roots }}</p>
+        <p><strong>Steps:</strong></p>
+        <p>{{ i.steps }}</p>
+
+        <p class="transtformation-btn">Function</p>
+      </div>
+    </details>
+    {% else %}
+      <p>No previous equations.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

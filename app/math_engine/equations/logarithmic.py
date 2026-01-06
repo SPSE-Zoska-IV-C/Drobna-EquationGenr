@@ -1,4 +1,4 @@
-from equations.root import Method, nmul, ndiv
+from math_engine.equations.root import Method, nmul, ndiv
 from operator import sub, add, mul, truediv
 import sympy as sp
 import random
@@ -31,6 +31,7 @@ class Mixed_methods(Method):
     def create_simple(self):
         self.equation = sp.Eq(sp.log(sp.symbols('x'), self.val_r), self.val_log)
         self.steps.append(self.equation)
+
 
 
     def create_advanced(self):
@@ -105,6 +106,12 @@ class Mixed_methods(Method):
         self.equation = sp.Eq(left_expr, right_expr)
         self.steps.append(self.equation)
 
+    def get_equation(self):
+        return sp.latex(self.equation)
+
+
+        
+
 
 class Substitution(Method):
     def create(self):
@@ -178,5 +185,8 @@ class Substitution(Method):
             self.steps.append(sp.Eq(left_side, right_side))
 
         self.equation = sp.Eq(left_side, right_side)
+
+    def get_equation(self):
+        return sp.latex(self.equation)
 
 
