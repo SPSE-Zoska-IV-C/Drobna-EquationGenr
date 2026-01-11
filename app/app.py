@@ -22,6 +22,8 @@ import matplotlib
 matplotlib.use("Agg")  # server-safe
 import matplotlib.pyplot as plt
 from flask_login import login_required, current_user
+import pdfkit
+
 
 
 from datetime import date
@@ -31,6 +33,11 @@ import math_engine.equations.logarithmic as log
 import math_engine.equations.exponential as ex
 import math_engine.functions.functions as func
 import sympy as sp
+
+WKHTMLTOPDF_PATH = os.path.join(os.path.dirname(__file__), "wkhtmltopdf.exe")
+pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+
+
 app = Flask(__name__)
 
 # ---------------- CONFIG ----------------
@@ -134,7 +141,7 @@ def generate_equations():
                                     type=form.type.data,
                                     equation=str(equation.get_equation()), 
                                     roots=str(equation.get_roots()), 
-                                    steps=str(equation.get_steps()))
+                                    steps= ''.join(map(str, equation.get_steps())))
             db.session.add(new_equation)
             db.session.commit()
         
@@ -213,13 +220,17 @@ def equations():
         .all()
     )
 
-    print('equations1')
+    todays_steps = [i.steps.split('\n') for i in todays_equations]
+    history_steps = [i.steps.split('\n') for i in history_equations]
+
 
     return render_template(
         "equations.html",
         active="equations",
         todays_equations=todays_equations,
-        history_equations=history_equations
+        history_equations=history_equations,
+        todays_steps=todays_steps,
+        history_steps=history_steps
     )
 
 
@@ -323,33 +334,85 @@ def function_details():
         func_obj = func.Exponential(coefs)
 
     func_obj.id = function.id
+    x_original, y_original, x_inverse, y_inverse = func_obj.get_graph()
     
-    return render_template("function_details.html", func=func_obj)
+    return render_template("function_details.html",
+                           x_original=x_original.tolist(),
+                            y_original=y_original.tolist(),
+                            x_inverse=x_inverse.tolist(),
+                            y_inverse=y_inverse.tolist(),
+                            active="function_details",
+                            func=func_obj)
 
-
-@app.route("/function_details/get_img/<int:function_id>", methods=["GET", "POST"])
 @login_required
-def get_img(function_id):
-    id = function_id
-    function = Function.query.get(id)
-    coefs = {
-        'val_a': function.val_a,
-        'val_bn': function.val_bn,
-        'val_bd': function.val_bd,
-        'val_v': function.val_v,
-        'val_n': function.val_n,
-        'val_k': function.val_k,
-        'val_px': sp.sympify(function.val_px) if function.val_px not in (None, 'None') else None,
-        'val_py': sp.sympify(function.val_py) if function.val_py not in (None, 'None') else None}
+@app.route("/export/pdf", methods=["GET", "POST"])
+def export_pdf_options():
+    if request.method == "POST":
+        export_type = request.form["export_type"]
+        template = request.form["template"]
+        limit = int(request.form["limit"])
 
-    if function.type == 'logarithmic':
-        func_obj = func.Logarithmic(coefs)
+        return redirect(url_for(
+            "export_pdf_generate",
+            export_type=export_type,
+            template=template,
+            limit=limit
+        ))
+
+    return render_template(
+        "export_pdf_options.html",
+        active="To pdf"
+    )
+
+
+
+@login_required
+@app.route("/export/pdf/generate")
+def export_pdf_generate():
+    export_type = request.args.get("export_type")
+    template = request.args.get("template")
+    limit = int(request.args.get("limit"))
+
+    if export_type == "equations":
+        data = (
+            Equation.query
+            .filter_by(id_user=current_user.id)
+            .order_by(Equation.day_generated.desc())
+            .limit(limit)
+            .all()
+        )
+        html = render_template(
+            f"pdf/{template}_equations.html",
+            equations=data,
+            user=current_user
+        )
+
     else:
-        func_obj = func.Exponential(coefs)
+        data = (
+            Function.query
+            .filter_by(id_user=current_user.id)
+            .order_by(Function.day_generated.desc())
+            .limit(limit)
+            .all()
+        )
+        html = render_template(
+            f"pdf/{template}_functions.html",
+            functions=data,
+            user=current_user
+        )
 
-    img = func_obj.plot()
+    pdf = pdfkit.from_string(html, False, configuration=pdfkit_config)
 
-    return send_file(img, mimetype="image/png")
+
+    return Response(
+        pdf,
+        mimetype="application/pdf",
+        headers={
+            "Content-Disposition": "attachment; filename=export.pdf"
+        }
+    )
+
+
 
 # ---------------- LOGOUT ----------------
 @login_required

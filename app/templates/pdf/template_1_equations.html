@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial; }
+    h1 { text-align: center; }
+    .equation { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>Equations Export</h1>
+<p>User: {{ user.username }}</p>
+
+{% for eq in equations %}
+<div class="equation">
+  <strong>Equation:</strong> {{ eq.equation }}<br>
+  <strong>Roots:</strong> {{ eq.roots }}<br>
+</div>
+{% endfor %}
+
+</body>
+</html>

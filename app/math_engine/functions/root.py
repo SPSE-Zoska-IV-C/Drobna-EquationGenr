@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 class Function(ABC):
     def __init__(self, coefficients=None):
         self.coefficients = coefficients
-        self.create_coefficients()
+        if self.coefficients is None:
+            self.create_coefficients()
         self.get_parameters()
 
     @abstractmethod

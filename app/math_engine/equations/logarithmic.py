@@ -12,10 +12,15 @@ class Mixed_methods(Method):
 
         self.roots = [self.val_x]
 
+        self.steps.append(sp.latex(f'K = {self.val_x}'))
+        self.steps.append('\n')
+
         if self.level == 'simple':
             self.create_simple()
+            self.steps.reverse()
         elif self.level == 'advanced':
             self.create_advanced()
+            self.steps.reverse()
     
     
     def create_function_coefficients(self):
@@ -30,7 +35,8 @@ class Mixed_methods(Method):
 
     def create_simple(self):
         self.equation = sp.Eq(sp.log(sp.symbols('x'), self.val_r), self.val_log)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
 
 
 
@@ -73,7 +79,8 @@ class Mixed_methods(Method):
         left_expr = chosen_components[0][0]
         right_expr = chosen_components[0][1]
 
-        self.steps.append(sp.Eq(left_expr, right_expr))
+        self.steps.append(sp.latex(sp.Eq(left_expr, right_expr)))
+        self.steps.append('\n')
 
         template_type = random.randint(1, 5)
 
@@ -104,7 +111,8 @@ class Mixed_methods(Method):
             right_expr = sp.log(sp.log(right_expr + k, base), base)
 
         self.equation = sp.Eq(left_expr, right_expr)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
 
     def get_equation(self):
         return sp.latex(self.equation)
@@ -129,35 +137,52 @@ class Substitution(Method):
         self.val_b = self.val_a * (self.val_p + self.val_q)
         self.val_c = self.val_a * (self.val_p * self.val_q)
 
+        self.steps.append(rf"K = \{{{self.val_x1},\, {self.val_x2}\}}")
+        self.steps.append('\n')
+
         # variables
         t = sp.symbols('t')
         
         # quadratic equation
         quad_eq = sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0)
 
+        self.steps.append(r"x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}")
+        self.steps.append('\n')
+        self.steps.append(rf"c = {self.val_c}")
+        self.steps.append('\n')
+        self.steps.append(rf"b = {self.val_b}")
+        self.steps.append('\n')
+        self.steps.append(rf"a = {self.val_a}")
+        self.steps.append('\n')
         self.steps.append(quad_eq)
-        self.steps.append(sp.Eq(sp.Symbol('t'), sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}'))))
+        self.steps.append('\n')
+        self.steps.append(sp.latex(sp.Eq(sp.Symbol('t'), sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')))))
+        self.steps.append('\n')
 
         self.roots = [self.val_x1, self.val_x2]
 
         if self.level == 'simple':
             self.create_simple()
+            self.steps.reverse()
         elif self.level == 'advanced':
             self.create_advanced()
+            self.steps.reverse()
 
     def create_function_coefficients(self):
         self.func_coefs = None
 
     def create_simple(self):
         self.equation = sp.Eq(self.val_a * (sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')) ** 2) + self.val_b * sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')) , - self.val_c)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
 
     def create_advanced(self):
         x = sp.symbols('x')
 
         left_side = self.val_a * (sp.log(x, sp.symbols(f'{self.val_r}')) ** 2) + self.val_b * sp.log(x, sp.symbols(f'{self.val_r}'))
         right_side = -self.val_c
-        self.steps.append(sp.Eq(left_side, right_side))
+        self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+        self.steps.append('\n')
 
         modifications = random.sample([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 4))
         
@@ -174,7 +199,8 @@ class Substitution(Method):
                 right_side = func(right_side, n)
 
         if right_side != original_rs:
-            self.steps.append(sp.Eq(left_side, right_side))
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
 
 
         # Optionally wrap in parentheses or scale both sides
@@ -182,7 +208,8 @@ class Substitution(Method):
             scale = random.choice([2, 3, 0.5, -1])
             left_side = scale * left_side
             right_side = scale * right_side
-            self.steps.append(sp.Eq(left_side, right_side))
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
 
         self.equation = sp.Eq(left_side, right_side)
 

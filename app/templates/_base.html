@@ -50,13 +50,14 @@
         {% if active == "equations" %}Equations
         {% elif active == "functions" %}Functions
         {% elif active == "generate" %}Generate
+        {% elif active == "function_details" %}Function details
         {% else %}ExpoLoGen{% endif %}
       </p>
     </div>
   
     <div class="right">
-      <p class="hover-item">Export to PDF</p>
-      <div class="profile-icon">👤</div>
+      <a class="hover-item" href="{{ url_for('export_pdf_options') }}">Export to PDF</a>      
+      <a class="profile-icon" href="{{ url_for('logout') }}">👤</a>
     </div>
   </div>
   

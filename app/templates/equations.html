@@ -13,21 +13,24 @@
   <h2>Today's Equations</h2>
 
   <div class="content-list">
-    {% for i in todays_equations %}
+    {% for i in range(todays_equations|length) %}
     <details class="ct-card">
       <summary class="ct-summary">
         <div class="ct-main">
-          <p class="ct-text">{{ i.equation }}</p>
-          <p class="ct-meta">Level: {{ i.level }}</p>
-          <p class="ct-meta">Type: {{ i.type }}</p>
+          <p class="ct-text">$$ {{ todays_equations[i].equation }} $$</p>
+          <p class="ct-meta">
+            Level: {{ todays_equations[i].level }} ·
+            Type: {{ todays_equations[i].type }} ·
+          </p>
         </div>
         <span class="arrow"></span>
       </summary>
 
       <div class="ct-details">
-        <p><strong>Roots:</strong> {{ i.roots }}</p>
         <p><strong>Steps:</strong></p>
-        <p>{{ i.steps }}</p>
+        {% for j in todays_steps[i] %}
+            <p>$$ {{ j }} $$</p>
+        {% endfor %}
 
         <p class="transtformation-btn">Function</p>
       </div>
@@ -43,24 +46,25 @@
   <h2>History</h2>
 
   <div class="content-list">
-    {% for i in history_equations %}
+    {% for i in range(history_equations|length) %}
     <details class="ct-card">
       <summary class="ct-summary">
         <div class="ct-main">
-          <p class="ct-text">{{ i.equation }}</p>
+          <p class="ct-text">$$ {{ history_equations[i].equation }} $$</p>
           <p class="ct-meta">
-            Level: {{ i.level }} ·
-            Type: {{ i.type }} ·
-            {{ i.day_generated.strftime('%Y-%m-%d') }}
+            Level: {{ history_equations[i].level }} ·
+            Type: {{ history_equations[i].type }} ·
           </p>
         </div>
         <span class="arrow"></span>
       </summary>
 
       <div class="ct-details">
-        <p><strong>Roots:</strong> {{ i.roots }}</p>
         <p><strong>Steps:</strong></p>
-        <p>{{ i.steps }}</p>
+          {% for j in history_steps[i] %}
+            <p>$$ {{ j }} $$</p>
+          {% endfor %}
+
 
         <p class="transtformation-btn">Function</p>
       </div>

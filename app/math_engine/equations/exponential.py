@@ -23,36 +23,53 @@ class Substitution(Method):
         self.val_b = self.val_a * (self.val_p + self.val_q)
         self.val_c = self.val_a * (self.val_p * self.val_q)
 
+        self.steps.append(rf"K = \{{{self.val_x1},\, {self.val_x2}\}}")
+        self.steps.append('\n')
+
         # variables
         t = sp.symbols('t')
         
         # quadratic equation
-        quad_eq = sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0)
+        quad_eq = sp.latex(sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0))
         
+        self.steps.append(r"x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}")
+        self.steps.append('\n')
+        self.steps.append(rf"c = {self.val_c}")
+        self.steps.append('\n')
+        self.steps.append(rf"b = {self.val_b}")
+        self.steps.append('\n')
+        self.steps.append(rf"a = {self.val_a}")
+        self.steps.append('\n')
         self.steps.append(quad_eq)
-        self.steps.append(sp.Eq(sp.Symbol('t'), sp.Symbol(f'{self.val_r**sp.Symbol("x")}')))
+        self.steps.append('\n')
+        self.steps.append(sp.latex(sp.Eq(sp.symbols('t'), self.val_r**sp.symbols("x"))))
+        self.steps.append('\n')
 
         self.roots = [self.val_x1, self.val_x2]
 
         # main equation
         if self.level == 'simple':
             self.create_simple()
+            self.steps.reverse()
         elif self.level == 'advanced':
             self.create_advanced()
+            self.steps.reverse()
     
     def create_function_coefficients(self):
         self.func_coefs = None
 
     def create_simple(self):
         self.equation = sp.Eq(self.val_a * (self.val_r ** (2*sp.symbols('x'))) + self.val_b * (self.val_r ** sp.symbols('x')), -self.val_c)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
   
     def create_advanced(self):
         x = sp.symbols('x')
 
         left_side = self.val_a * (self.val_r ** (2 * x)) + self.val_b * (self.val_r ** x)
         right_side = -self.val_c
-        self.steps.append(sp.Eq(left_side, right_side))
+        self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+        self.steps.append('\n')
 
         modifications = random.sample([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 3))
         
@@ -69,7 +86,8 @@ class Substitution(Method):
                 right_side = func(right_side, n)
 
         if right_side != original_rs:
-            self.steps.append(sp.Eq(left_side, right_side))
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
 
 
         # Optionally wrap in parentheses or scale both sides
@@ -77,13 +95,14 @@ class Substitution(Method):
             scale = random.choice([2, 3, 0.5, -1])
             left_side = scale * left_side
             right_side = scale * right_side
-            self.steps.append(sp.Eq(left_side, right_side))
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
 
         self.equation = sp.Eq(left_side, right_side)
 
     def get_equation(self):
         return sp.latex(self.equation)
-
+    
 
 
 class Matching_bases(Method):
@@ -92,11 +111,15 @@ class Matching_bases(Method):
         self.val_x = random.randint(-3, 5) # main x of the equation
 
         self.roots = [self.val_x]
+        self.steps.append(sp.latex(f'K = {self.val_x}'))
+        self.steps.append('\n')
 
         if self.level == 'simple':
             self.create_simple()
+            self.steps.reverse()
         elif self.level == 'advanced':
             self.create_advanced()
+            self.steps.reverse()
     
     def create_function_coefficients(self): # a*b**x + k
         self.func_coefs.update({'val_a': 1, 
@@ -116,7 +139,8 @@ class Matching_bases(Method):
 
         x = sp.symbols('x')
         self.equation = sp.Eq(self.val_r ** x, self.val_t)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
     
     def create_advanced(self):
         modifs_exp_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 2))
@@ -144,7 +168,8 @@ class Matching_bases(Method):
         right_side = self.val_r ** right_exp
         left_side = self.val_r ** symb_x
         if symb_x != sp.symbols('x'):
-            self.steps.append(sp.Eq(left_side, right_side))
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
 
         for function in modifs_base_signs:
             n = random.choice([1,2,4,5]) if random.choice([True, False]) else self.val_r ** self.val_x
@@ -156,7 +181,8 @@ class Matching_bases(Method):
             right_side = function(right_side, n)
             left_side = function(left_side, n)
         
-        self.steps.append(sp.Eq(left_side, right_side))
+        self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+        self.steps.append('\n')
         self.equation = sp.Eq(left_side, right_side)
 
     def get_equation(self):
@@ -169,12 +195,15 @@ class Logarithm(Method):
         self.val_x = log10(self.number_right)/log10(self.number_left)
 
         self.roots = [self.val_x]
+        self.steps.append(sp.latex(f'K = {self.val_x}'))
+        self.steps.append('\n')
 
         if self.level == 'simple':
             self.create_simple()
-
+            self.steps.reverse()
         elif self.level == 'advanced':
             self.create_advanced()
+            self.steps.reverse()
 
     def create_function_coefficients(self):# a*b**x + k
         self.func_coefs.update({'val_a': 1, 
@@ -189,7 +218,8 @@ class Logarithm(Method):
     def create_simple(self):
         x = sp.symbols('x')
         self.equation = sp.Eq(self.number_left ** x, self.number_right)
-        self.steps.append(self.equation)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
 
     def create_advanced(self):
         modifs_exp_signs = random.choices([add, sub, mul], k=random.randint(1, 2))
@@ -215,7 +245,8 @@ class Logarithm(Method):
             symb_x = function(symb_x, n)
         
         
-        self.steps.append(sp.Eq(sp.symbols(f'{self.number_left}'), sp.symbols(f'{self.number_right}')))
+        self.steps.append(sp.latex(sp.Eq(sp.symbols(f'{self.number_left}'), sp.symbols(f'{self.number_right}'))))
+        self.steps.append('\n')
 
         self.number_left = self.number_left ** symb_x
 
@@ -224,7 +255,8 @@ class Logarithm(Method):
             self.number_right = function(self.number_right, n)
             self.number_left = function(self.number_left, n)
         
-        self.steps.append(sp.Eq(self.number_left, self.number_right))
+        self.steps.append(sp.latex(sp.Eq(self.number_left, self.number_right)))
+        self.steps.append('\n')
         self.equation = sp.Eq(self.number_left, self.number_right)
 
     def get_equation(self):

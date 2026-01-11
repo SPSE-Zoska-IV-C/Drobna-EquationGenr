@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+{% block title %}Export to PDF{% endblock %}
+
+{% block content %}
+<div class="export-container">
+  <h2>Export to PDF</h2>
+
+  <form method="POST">
+    <label>What do you want to export?</label>
+    <select name="export_type" required>
+      <option value="equations">Equations</option>
+      <option value="functions">Functions</option>
+    </select>
+
+    <label>Template</label>
+    <select name="template" required>
+      <option value="template_1">Template 1 (Simple)</option>
+      <option value="template_2">Template 2 (Detailed)</option>
+    </select>
+
+    <label>Number of items</label>
+    <input type="number" name="limit" min="1" max="100" value="10" required>
+
+    <button type="submit">Generate PDF</button>
+  </form>
+</div>
+{% endblock %}

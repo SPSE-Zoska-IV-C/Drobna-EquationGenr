@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block header_title %}
+<p class="title">Generate PDF</p>
+{% endblock %}
+
+{% block content %}
+<form method="POST" action="/export-pdf">
+    <label>Template</label>
+    <select name="template">
+      <option value="simple">Simple</option>
+      <option value="detailed">Detailed</option>
+    </select>
+  
+    <label>Number of items</label>
+    <input type="number" name="limit" min="1" max="100" value="10">
+  
+    <button type="submit">Generate PDF</button>
+  </form>
+
+{% endblock %}
