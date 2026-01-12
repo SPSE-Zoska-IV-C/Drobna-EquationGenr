@@ -21,7 +21,58 @@
     <label>Number of items</label>
     <input type="number" name="limit" min="1" max="100" value="10" required>
 
-    <button type="submit">Generate PDF</button>
+    <button id="download-pdf">Download PDF</button>
+      <div id="pdf-content">
+        <!-- This is where your table/data will be rendered -->
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Equation / Function</th>
+              <th>Steps</th>
+            </tr>
+          </thead>
+          <tbody id="pdf-table-body">
+            {% for eq in equations %}
+            <tr>
+              <td>{{ eq.id_equation }}</td>
+              <td>{{ eq.equation }}</td>
+              <td>{{ eq.steps|replace('\n', '<br>')|safe }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+            
+            <!-- rows will be injected by JS -->
+        </table>
+      </div>
+
   </form>
 </div>
 {% endblock %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+  document.getElementById("download-pdf").addEventListener("click", async function() {
+      const { jsPDF } = window.jspdf;
+  
+      const pdf = new jsPDF();
+  
+      // Get the content to convert to PDF
+      const element = document.getElementById("pdf-content");
+  
+      // Convert HTML to canvas
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+  
+      // Add image to PDF
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  
+      pdf.save("export.pdf");
+  });
+  </script>
+  
