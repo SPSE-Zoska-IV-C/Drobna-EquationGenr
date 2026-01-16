@@ -11,14 +11,17 @@
 <body>
 
 <h1>Equations Export</h1>
-<p>User: {{ user.username }}</p>
 
 {% for eq in equations %}
 <div class="equation">
-  <strong>Equation:</strong> {{ eq.equation }}<br>
-  <strong>Roots:</strong> {{ eq.roots }}<br>
+  <strong>Vyrieš rovnicu:</strong>
+  <p>
+    {{ eq.equation if eq.equation is defined else eq["equation"] }}
+  </p>
 </div>
 {% endfor %}
 
 </body>
 </html>
+
+

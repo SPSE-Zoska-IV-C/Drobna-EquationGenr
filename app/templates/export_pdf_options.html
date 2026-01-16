@@ -5,74 +5,213 @@
 <div class="export-container">
   <h2>Export to PDF</h2>
 
-  <form method="POST">
+  <form id="export-form">
     <label>What do you want to export?</label>
-    <select name="export_type" required>
+    <select id="export-type" required>
       <option value="equations">Equations</option>
       <option value="functions">Functions</option>
     </select>
 
     <label>Template</label>
-    <select name="template" required>
+    <select id="template" required>
       <option value="template_1">Template 1 (Simple)</option>
       <option value="template_2">Template 2 (Detailed)</option>
     </select>
 
     <label>Number of items</label>
-    <input type="number" name="limit" min="1" max="100" value="10" required>
+    <input type="number" id="limit" min="1" max="100" value="10" required>
 
-    <button id="download-pdf">Download PDF</button>
-      <div id="pdf-content">
-        <!-- This is where your table/data will be rendered -->
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Equation / Function</th>
-              <th>Steps</th>
-            </tr>
-          </thead>
-          <tbody id="pdf-table-body">
-            {% for eq in equations %}
-            <tr>
-              <td>{{ eq.id_equation }}</td>
-              <td>{{ eq.equation }}</td>
-              <td>{{ eq.steps|replace('\n', '<br>')|safe }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-            
-            <!-- rows will be injected by JS -->
-        </table>
+    <label>Source</label>
+    <select id="source" required>
+      <option value="existing">Pick from existing ones</option>
+      <option value="generate">Generate new</option>
+    </select>
+  </form>
+
+  <button type="button" id="content-btn">Content of PDF</button>
+
+  <!-- DYNAMIC CONTAINER -->
+  <div id="pdf-source-container" class="hidden">
+
+    <!-- GENERATE MODE -->
+    <div id="generate-preview" class="hidden">
+      <h3>Generate new content</h3>
+
+      <div id="gen-equations" class="hidden">
+        <label>Type</label>
+        <select id="gen-eq-type">
+          <option value="logarithmic-substitute">logarithmic substitute</option>
+          <option value="logarithmic-mixed">logarithmic mixed methods</option>
+          <option value="exponential-substitute">exponential substitute</option>
+          <option value="exponential-match">exponential match</option>
+          <option value="exponential-log">exponential log</option>
+        </select>
+
+        <label>Level</label>
+        <select id="gen-eq-level">
+          <option value="simple">simple</option>
+          <option value="advanced">advanced</option>
+        </select>
       </div>
 
-  </form>
-</div>
-{% endblock %}
+      <div id="gen-functions" class="hidden">
+        <label>Type</label>
+        <select id="gen-fn-type">
+          <option value="logarithmic">logarithmic</option>
+          <option value="exponential">exponential</option>
+        </select>
+      </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+      <label>Number</label>
+      <input type="number" id="gen-number" readonly>
+    </div>
+
+    <!-- EXISTING MODE -->
+    <div id="existing-picker" class="hidden">
+      <h3>Select items for PDF</h3>
+      <p>Select exactly <strong id="required-count"></strong> items</p>
+      <div id="items-list" class="items-grid"></div>
+    </div>
+
+    <button id="generate-pdf-btn" disabled>Generate PDF</button>
+  </div>
+</div>
 
 <script>
-  document.getElementById("download-pdf").addEventListener("click", async function() {
-      const { jsPDF } = window.jspdf;
-  
-      const pdf = new jsPDF();
-  
-      // Get the content to convert to PDF
-      const element = document.getElementById("pdf-content");
-  
-      // Convert HTML to canvas
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-  
-      // Add image to PDF
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  
-      pdf.save("export.pdf");
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("content-btn");
+  const container = document.getElementById("pdf-source-container");
+  const exportType = document.getElementById("export-type");
+  const sourceSelect = document.getElementById("source");
+  const limitInput = document.getElementById("limit");
+
+  const generatePreview = document.getElementById("generate-preview");
+  const existingPicker = document.getElementById("existing-picker");
+  const itemsList = document.getElementById("items-list");
+  const requiredCount = document.getElementById("required-count");
+  const genNumber = document.getElementById("gen-number");
+  const generatePdfBtn = document.getElementById("generate-pdf-btn");
+
+  let selectedItems = [];
+
+  btn.addEventListener("click", async () => {
+    container.classList.remove("hidden");
+    selectedItems = [];
+    generatePdfBtn.disabled = true;
+
+    if (sourceSelect.value === "generate") {
+      showGenerateMode();
+    } else {
+      await loadExistingItems();
+    }
   });
-  </script>
-  
+
+  function showGenerateMode() {
+    generatePreview.classList.remove("hidden");
+    existingPicker.classList.add("hidden");
+
+    document.getElementById("gen-equations").classList.add("hidden");
+    document.getElementById("gen-functions").classList.add("hidden");
+
+    if (exportType.value === "equations") {
+      document.getElementById("gen-equations").classList.remove("hidden");
+    } else {
+      document.getElementById("gen-functions").classList.remove("hidden");
+    }
+
+    genNumber.value = limitInput.value;
+    generatePdfBtn.disabled = false;
+  }
+
+  limitInput.addEventListener("input", () => {
+    genNumber.value = limitInput.value;
+  });
+
+  async function loadExistingItems() {
+    generatePreview.classList.add("hidden");
+    existingPicker.classList.remove("hidden");
+
+    itemsList.innerHTML = "";
+    selectedItems = [];
+    requiredCount.textContent = limitInput.value;
+
+    const res = await fetch(`/api/${exportType.value}`);
+    const data = await res.json();
+
+    data.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "select-item";
+      div.textContent = item.label;
+      div.dataset.id = item.id;
+
+      div.addEventListener("click", () => toggleItem(div));
+      itemsList.appendChild(div);
+    });
+  }
+
+  function toggleItem(el) {
+    const id = el.dataset.id;
+
+    if (selectedItems.includes(id)) {
+      selectedItems = selectedItems.filter(x => x !== id);
+      el.classList.remove("selected");
+    } else {
+      if (selectedItems.length >= Number(limitInput.value)) return;
+      selectedItems.push(id);
+      el.classList.add("selected");
+    }
+
+    generatePdfBtn.disabled = selectedItems.length !== Number(limitInput.value);
+  }
+
+  generatePdfBtn.addEventListener("click", () => {
+    const params = new URLSearchParams({
+      export_type: exportType.value,
+      template: document.getElementById("template").value,
+      limit: limitInput.value,
+      source: sourceSelect.value
+    });
+
+    if (sourceSelect.value === "existing") {
+      params.append("ids", selectedItems.join(","));
+    } else {
+      if (exportType.value === "equations") {
+        params.append("gen_type", document.getElementById("gen-eq-type").value);
+        params.append("gen_level", document.getElementById("gen-eq-level").value);
+      } else {
+        params.append("gen_type", document.getElementById("gen-fn-type").value);
+      }
+    }
+
+    window.location.href = `/export/pdf/generate?${params.toString()}`;
+  });
+});
+</script>
+
+<style>
+.hidden { display: none; }
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.select-item {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #f8f8f8;
+  text-align: center;
+}
+
+.select-item.selected {
+  background-color: #52682D;
+  color: #E9EDDE;
+  border-color: #52682D;
+}
+</style>
+
+{% endblock %}

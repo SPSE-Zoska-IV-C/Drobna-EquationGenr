@@ -351,12 +351,14 @@ def export_pdf_options():
         export_type = request.form["export_type"]
         template = request.form["template"]
         limit = int(request.form["limit"])
+        source = request.form["source"]
 
         return redirect(url_for(
             "export_pdf_generate",
             export_type=export_type,
             template=template,
-            limit=limit
+            limit=limit,
+            source=source
         ))
 
     return render_template(
@@ -372,37 +374,107 @@ def export_pdf_generate():
     export_type = request.args.get("export_type")
     template = request.args.get("template")
     limit = int(request.args.get("limit"))
+    source = request.args.get("source")
 
+    ids = request.args.get("ids")              # for existing
+    gen_type = request.args.get("gen_type")    # for generate
+    gen_level = request.args.get("gen_level")  # equations only
+
+    # --------------------------------------------------
+    # EQUATIONS
+    # --------------------------------------------------
     if export_type == "equations":
-        data = (
-            Equation.query
-            .filter_by(id_user=current_user.id)
-            .order_by(Equation.day_generated.desc())
-            .limit(limit)
-            .all()
-        )
+
+        # ---------- EXISTING EQUATIONS ----------
+        if source == "existing":
+            id_list = [int(i) for i in ids.split(",")]
+
+            equations = (
+                Equation.query
+                .filter(
+                    Equation.id_equation.in_(id_list),
+                    Equation.id_user == current_user.id
+                )
+                .all()
+            )
+
+            # preserve selection order
+            equations.sort(key=lambda e: id_list.index(e.id_equation))
+
+        # ---------- GENERATE NEW EQUATIONS ----------
+        else:
+            equations = []
+
+            for _ in range(limit):
+                if gen_type == "logarithmic-substitute":
+                    eq = log.Substitution(gen_level)
+                elif gen_type == "logarithmic-mixed":
+                    eq = log.Mixed_methods(gen_level)
+                elif gen_type == "exponential-substitute":
+                    eq = ex.Substitution(gen_level)
+                elif gen_type == "exponential-match":
+                    eq = ex.Matching_bases(gen_level)
+                elif gen_type == "exponential-log":
+                    eq = ex.Logarithm(gen_level)
+                else:
+                    continue
+
+                equations.append({
+                    "equation": str(eq.get_equation()),
+                    "roots": str(eq.get_roots()),
+                    "steps": eq.get_steps()
+                })
+
         html = render_template(
             f"pdf/{template}_equations.html",
-            equations=data,
+            equations=equations,
             user=current_user
         )
 
+    # --------------------------------------------------
+    # FUNCTIONS
+    # --------------------------------------------------
     else:
-        data = (
-            Function.query
-            .filter_by(id_user=current_user.id)
-            .order_by(Function.day_generated.desc())
-            .limit(limit)
-            .all()
-        )
+
+        # ---------- EXISTING FUNCTIONS ----------
+        if source == "existing":
+            id_list = [int(i) for i in ids.split(",")]
+
+            functions = (
+                Function.query
+                .filter(
+                    Function.id.in_(id_list),
+                    Function.id_user == current_user.id
+                )
+                .all()
+            )
+
+            functions.sort(key=lambda f: id_list.index(f.id))
+
+        # ---------- GENERATE NEW FUNCTIONS ----------
+        else:
+            functions = []
+
+            for _ in range(limit):
+                if gen_type == "logarithmic":
+                    fn = func.Logarithmic()
+                elif gen_type == "exponential":
+                    fn = func.Exponential()
+                else:
+                    continue
+
+                functions.append(fn)
+
         html = render_template(
             f"pdf/{template}_functions.html",
-            functions=data,
+            functions=functions,
             user=current_user
         )
 
+    # --------------------------------------------------
+    # CREATE PDF
+    # --------------------------------------------------
     pdf = pdfkit.from_string(html, False, configuration=pdfkit_config)
-
 
     return Response(
         pdf,
@@ -411,6 +483,27 @@ def export_pdf_generate():
             "Content-Disposition": "attachment; filename=export.pdf"
         }
     )
+
+
+
+@app.route("/api/equations")
+@login_required
+def api_equations():
+    equations = Equation.query.filter_by(id_user=current_user.id).all()
+    return jsonify([
+        {"id": e.id_equation, "label": e.equation}
+        for e in equations
+    ])
+
+@app.route("/api/functions")
+@login_required
+def api_functions():
+    functions = Function.query.filter_by(id_user=current_user.id).all()
+    return jsonify([
+        {"id": f.id, "label": f"{f.type} function (id {f.id})"}
+        for f in functions
+    ])
+
 
 
 
