@@ -434,13 +434,18 @@ def export_pdf_generate():
     # --------------------------------------------------
     # FUNCTIONS
     # --------------------------------------------------
+    # --------------------------------------------------
+# FUNCTIONS
+# --------------------------------------------------
     else:
+
+        pdf_functions = []
 
         # ---------- EXISTING FUNCTIONS ----------
         if source == "existing":
             id_list = [int(i) for i in ids.split(",")]
 
-            functions = (
+            db_functions = (
                 Function.query
                 .filter(
                     Function.id.in_(id_list),
@@ -449,27 +454,53 @@ def export_pdf_generate():
                 .all()
             )
 
-            functions.sort(key=lambda f: id_list.index(f.id))
+            db_functions.sort(key=lambda f: id_list.index(f.id))
+
+            for f in db_functions:
+                coefs = {
+                    'val_a': f.val_a,
+                    'val_bn': f.val_bn,
+                    'val_bd': f.val_bd,
+                    'val_v': f.val_v,
+                    'val_n': f.val_n,
+                    'val_k': f.val_k,
+                    'val_px': sp.sympify(f.val_px) if f.val_px not in (None, 'None') else None,
+                    'val_py': sp.sympify(f.val_py) if f.val_py not in (None, 'None') else None
+                }
+
+                fn = (
+                    func.Logarithmic(coefs)
+                    if f.type == "logarithmic"
+                    else func.Exponential(coefs)
+                )
+
+                pdf_functions.append({
+                    "type": f.type,
+                    "latex": fn.get_latex_formula(),
+                    "coefficients": coefs
+                })
 
         # ---------- GENERATE NEW FUNCTIONS ----------
         else:
-            functions = []
-
             for _ in range(limit):
-                if gen_type == "logarithmic":
-                    fn = func.Logarithmic()
-                elif gen_type == "exponential":
-                    fn = func.Exponential()
-                else:
-                    continue
+                fn = (
+                    func.Logarithmic()
+                    if gen_type == "logarithmic"
+                    else func.Exponential()
+                )
 
-                functions.append(fn)
+                pdf_functions.append({
+                    "type": fn.type,
+                    "latex": fn.get_latex_formula(),
+                    "coefficients": fn.get_coefficients()
+                })
 
         html = render_template(
             f"pdf/{template}_functions.html",
-            functions=functions,
+            functions=pdf_functions,
             user=current_user
         )
+
 
     # --------------------------------------------------
     # CREATE PDF
@@ -499,10 +530,34 @@ def api_equations():
 @login_required
 def api_functions():
     functions = Function.query.filter_by(id_user=current_user.id).all()
-    return jsonify([
-        {"id": f.id, "label": f"{f.type} function (id {f.id})"}
-        for f in functions
-    ])
+
+    result = []
+
+    for f in functions:
+        coefs = {
+            'val_a': f.val_a,
+            'val_bn': f.val_bn,
+            'val_bd': f.val_bd,
+            'val_v': f.val_v,
+            'val_n': f.val_n,
+            'val_k': f.val_k,
+            'val_px': sp.sympify(f.val_px) if f.val_px not in (None, 'None') else None,
+            'val_py': sp.sympify(f.val_py) if f.val_py not in (None, 'None') else None
+        }
+
+        fn = (
+            func.Logarithmic(coefs)
+            if f.type == "logarithmic"
+            else func.Exponential(coefs)
+        )
+
+        result.append({
+            "id": f.id,
+            "label": fn.get_latex_formula()   # 👈 THIS IS THE KEY
+        })
+
+    return jsonify(result)
+
 
 
 
