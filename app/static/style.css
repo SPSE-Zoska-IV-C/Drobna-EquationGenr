@@ -457,4 +457,483 @@ main {
 }
 }
 
-  
+
+/* ---------- CONTENT BASE ---------- */
+.todays-content,
+.history-content {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.todays-content h2,
+.history-content h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ---------- COLLAPSIBLE CARD ---------- */
+.ct-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ct-card summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.ct-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.ct-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.ct-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ct-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ct-meta {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.arrow::before {
+  content: "v";
+  font-size: 18px;
+}
+
+.ct-card[open] .arrow::before {
+  content: "^";
+}
+
+.ct-details {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+/* ---------- EQUATIONS PAGE ---------- */
+.header.equations ~ main {
+  background-color: white;
+}
+
+.no-ct.equations {
+  color: #52682D;
+} 
+
+.header.equations ~ main .ct-card {
+  background-color: #52682D;
+  color: #E9EDDE;
+}
+
+.header.equations ~ main .ct-details {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+.header.equations ~ main .transtformation-btn {
+  align-self: flex-end;
+  padding: 6px 14px;
+  background-color: #52682D;
+  color: #E9EDDE;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.header.equations ~ main .transtformation-btn:hover {
+  background-color: white;
+  color: #52682D;
+}
+
+
+/* ---------- FUNCTIONS PAGE ---------- */
+.header.functions ~ main {
+  background-color: white;
+}
+
+.no-ct.functions {
+  color: #052f5f;
+} 
+
+.header.functions ~ main .ct-card {
+  background-color: #052f5f;
+  color: white;
+}
+
+.header.functions ~ main .ct-meta {
+  opacity: 0.85;
+}
+
+.header.functions ~ main a {
+  margin-top: 6px;
+  color: #E9EDDE;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.header.functions ~ main a:hover {
+  color: white;
+}
+
+
+/* ---------- EQUATIONS CARD REFINEMENT ---------- */
+.header.equations ~ main .ct-card {
+  background-color: #E9EDDE;              /* switched */
+  color: #52682D;
+  border-radius: 22px;                    /* bigger rounding */
+  border: 2px solid #52682D;              /* green edge */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Slight lift on hover */
+.header.equations ~ main .ct-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Summary area */
+.header.equations ~ main .ct-summary {
+  padding: 20px;
+}
+
+/* Details panel (switched color) */
+.header.equations ~ main .ct-details {
+  background-color: #52682D;
+  color: #E9EDDE;
+  border-top: 2px solid #52682D;
+  border-radius: 0 0 22px 22px;
+}
+
+/* Arrow color */
+.header.equations ~ main .arrow::before {
+  color: #52682D;
+}
+
+/* Button inside details */
+.header.equations ~ main .transtformation-btn {
+  align-self: flex-end;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #E9EDDE;
+  color: #52682D;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header.equations ~ main .transtformation-btn:hover {
+  background-color: white;
+  color: #52682D;
+}
+
+
+
+/* ---------- FUNCTIONS CARD REFINEMENT ---------- */
+.header.functions ~ main .ct-card {
+  background-color: #DEDEED;               /* light surface */
+  color: #052f5f;
+  border-radius: 22px;                     /* same rounding */
+  border: 2px solid #052f5f;               /* blue edge */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Lift on hover */
+.header.functions ~ main .ct-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Summary area */
+.header.functions ~ main .ct-summary {
+  padding: 20px;
+}
+
+/* Text hierarchy */
+.header.functions ~ main .ct-text {
+  font-weight: 600;
+}
+
+.header.functions ~ main .ct-meta {
+  opacity: 0.85;
+}
+
+/* Details area (if used later) */
+.header.functions ~ main .ct-details {
+  background-color: #052f5f;
+  color: white;
+  border-top: 2px solid #052f5f;
+  border-radius: 0 0 22px 22px;
+}
+
+/* Links styled like buttons */
+.header.functions ~ main a {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #052f5f;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover effect
+.header.functions ~ main a:hover {
+  background-color: ;
+  color: #052f5f;
+  transform: translateY(-1px);
+} */
+
+
+
+/* ---------- FUNCTIONS PAGE FIXES ---------- */
+
+/* Light blue replacement */
+:root {
+  --functions-light: #E6EEF7;
+}
+
+/* Increase spacing between cards */
+.header.functions ~ main .content-list {
+  gap: 22px; /* bigger visual separation */
+}
+
+/* Constrain and center all cards (TODAY + HISTORY) */
+.header.functions ~ main .ct-card {
+  background-color: var(--functions-light);
+  color: #052f5f;
+  border-radius: 22px;
+  border: 2px solid #052f5f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+
+  max-width: 900px;      /* FIXES full-width issue */
+  margin: 0 auto;        /* centers every card */
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover lift */
+.header.functions ~ main .ct-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Summary spacing */
+.header.functions ~ main .ct-summary {
+  padding: 20px;
+}
+
+/* Details area (future-proof, consistent with equations) */
+.header.functions ~ main .ct-details {
+  background-color: #052f5f;
+  color: white;
+  border-top: 2px solid #052f5f;
+  border-radius: 0 0 22px 22px;
+}
+
+/* Button-like link */
+.header.functions ~ main a {
+  align-self: flex-start;
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: #052f5f;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.header.functions ~ main a:hover {
+  background-color: var(--functions-light);
+  color: #052f5f;
+  transform: translateY(-1px);
+}
+
+
+
+/* ---------- FUNCTIONS HARD LAYOUT FIX ---------- */
+
+/* Light blue tone */
+:root {
+  --functions-light: #E6EEF7;
+}
+
+/* Ensure lists behave consistently */
+.header.functions ~ main .content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;              /* REAL spacing, always */
+  align-items: stretch;  /* prevent width collapse */
+}
+
+/* Force details to behave like normal blocks */
+.header.functions ~ main details.ct-card {
+  display: block;
+  width: 100%;
+}
+
+/* Card styling + width control */
+.header.functions ~ main .ct-card {
+  background-color: var(--functions-light);
+  color: #052f5f;
+
+  border-radius: 22px;
+  border: 2px solid #052f5f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+
+  max-width: 900px;
+  width: 100%;            /* IMPORTANT */
+  margin: 0 auto;         /* center every card */
+
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover lift */
+.header.functions ~ main .ct-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Summary must also stretch */
+.header.functions ~ main .ct-summary {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Text consistency */
+.header.functions ~ main .ct-main {
+  width: 100%;
+}
+
+/* Button-style link */
+.header.functions ~ main a {
+  display: inline-block;     /* prevents layout influence */
+  margin-top: 12px;
+  padding: 8px 16px;
+
+  background-color: #052f5f;
+  color: white;
+
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.header.functions ~ main a:hover {
+  background-color: var(--functions-light);
+  color: #052f5f;
+  transform: translateY(-1px);
+}
+
+.todays-content,
+.history-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* --- FUNCTIONS: final width & spacing stabilization --- */
+.header.functions ~ main .ct-card {
+  width: 100%;
+  max-width: none;   /* let parent control width */
+  margin: 0;
+}
+
+
+/* --- FUNCTIONS: summary layout like equations --- */
+.header.functions ~ main .ct-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Right-side Details button */
+.header.functions ~ main .details-btn {
+  padding: 8px 16px;
+  background-color: #052f5f;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.header.functions ~ main .details-btn:hover {
+  background-color: var(--functions-light);
+  color: #052f5f;
+  transform: translateY(-1px);
+}
+
+/* Functions summary layout like equations, properly aligned */
+.header.functions ~ main .ct-summary {
+  display: flex;
+  justify-content: space-between;   /* left = formula+type, right = Details button */
+  align-items: center;              /* vertically center the content */
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Left-side container (formula + type) */
+.header.functions ~ main .ct-summary .ct-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;   /* ensure it stays left-aligned */
+  align-items: flex-start;  /* prevents formula from centering */
+}
+
+/* Right-side Details button */
+.header.functions ~ main .details-btn {
+  padding: 8px 16px;
+  background-color: #052f5f;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;   /* vertically center inside button */
+  justify-content: center;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.header.functions ~ main .details-btn:hover {
+  background-color: var(--functions-light);
+  color: #052f5f;
+  transform: translateY(-1px);
+}

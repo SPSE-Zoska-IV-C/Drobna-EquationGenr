@@ -15,14 +15,18 @@
         <div class="ct-main">
           <p class="ct-text">$$ {{ f.get_latex_formula() }} $$</p>
           <p class="ct-meta">Type: {{ f.get_type() }}</p>
-          <a href="{{ url_for('function_details', function_id=f.id) }}">Details</a>
         </div>
+      
+        <a class="details-btn"
+           href="{{ url_for('function_details', function_id=f.id) }}">
+           Details
+        </a>
       </summary>
-
-      </div>
+      
+      
     </details>
     {% else %}
-      <p>No functions generated today.</p>
+      <p class="no-ct {{ active }}">No functions generated today.</p>
     {% endfor %}
   </div>
 </div>
@@ -36,13 +40,16 @@
         <div class="ct-main">
           <p class="ct-text">$$ {{ f.get_latex_formula() }} $$</p>
           <p class="ct-meta">Type: {{ f.get_type() }}</p>
-          <a href="{{ url_for('function_details', function_id=f.id) }}">Details</a>
         </div>
+      
+        <a class="details-btn"
+           href="{{ url_for('function_details', function_id=f.id) }}">
+           Details
+        </a>
       </summary>
-      </div>
     </details>
     {% else %}
-      <p>No previous functions.</p>
+      <p class="no-ct {{ active }}">No previous functions.</p>
     {% endfor %}
   </div>
 </div>
