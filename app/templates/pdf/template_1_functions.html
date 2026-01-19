@@ -8,8 +8,6 @@
     .function { margin-bottom: 24px; }
   </style>
 
-  <!-- MathJax -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -18,9 +16,9 @@
 <strong>Vypíš parametre a nakresli graf funkcií:</strong>
 {% for fun in functions %}
 <div class="function">
-  <p>
-    $$ {{ fun.latex }} $$
-  </p>
+    <p>
+        <img src="{{ fun.img }}" alt="function formula">
+    </p>      
 </div>
 {% endfor %}
 

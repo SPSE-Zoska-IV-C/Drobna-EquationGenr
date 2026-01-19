@@ -77,6 +77,9 @@
   </div>
 </div>
 
+<!-- MathJax for elegant formula rendering -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("content-btn");
@@ -127,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     genNumber.value = limitInput.value;
   });
 
+
   async function loadExistingItems() {
     generatePreview.classList.add("hidden");
     existingPicker.classList.remove("hidden");
@@ -135,18 +139,27 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedItems = [];
     requiredCount.textContent = limitInput.value;
 
+    // Fetch LaTeX formulas directly
     const res = await fetch(`/api/${exportType.value}`);
     const data = await res.json();
 
     data.forEach(item => {
       const div = document.createElement("div");
       div.className = "select-item";
-      div.textContent = item.label;
       div.dataset.id = item.id;
+
+      // Render formula elegantly using LaTeX
+      const p = document.createElement("p");
+      p.className = "math-formula";
+      p.innerHTML = `$$ ${item.label} $$`;
+      div.appendChild(p);
 
       div.addEventListener("click", () => toggleItem(div));
       itemsList.appendChild(div);
     });
+
+    // Trigger MathJax typesetting
+    MathJax.typesetPromise();
   }
 
   function toggleItem(el) {
@@ -191,6 +204,32 @@ document.addEventListener("DOMContentLoaded", () => {
 <style>
 .hidden { display: none; }
 
+.select-item {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #f8f8f8;
+  text-align: center;
+
+  /* New additions for stable sizing */
+  width: 100%;         /* take full grid cell width */
+  min-height: 60px;    /* stable minimum height */
+  max-height: 150px;   /* maximum height before scrolling */
+  overflow: auto;      /* scroll if formula is too long */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.math-formula {
+  font-size: 1.1em;
+  line-height: 1.4em;
+  word-wrap: break-word;   /* break long formulas nicely */
+  max-width: 100%;         /* ensure it doesn’t exceed box */
+}
+
+
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -212,6 +251,10 @@ document.addEventListener("DOMContentLoaded", () => {
   color: #E9EDDE;
   border-color: #52682D;
 }
-</style>
 
+.math-formula {
+  font-size: 1.1em;
+  line-height: 1.4em;
+}
+</style>
 {% endblock %}

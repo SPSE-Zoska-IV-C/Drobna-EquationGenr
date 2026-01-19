@@ -48,6 +48,12 @@
     pointer-events: auto;
   }
   
+  .select-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto; 
+  }
 
 
   /* ---------- HEADER FIX ---------- */
@@ -372,4 +378,83 @@
   #sidebar-toggle:not(:checked) ~ #overlay {
     display: none;
   }
+
+  /* Main content */
+main {
+  position: relative;
+  z-index: 1; /* low enough so sidebar (z-index:20) overlays it */
+  padding-top: 20px;
+}
+
+/* PDF container inside main */
+#pdf-source-container {
+  border: 3px solid red;
+  padding: 20px;
+  position: relative; /* keep it inside main flow */
+  z-index: 1;
+}
+
+/* Sidebar stays on top */
+#sidebar {
+  position: fixed;
+  left: -260px;
+  top: 0;
+  width: 260px;
+  height: 100%;
+  background: #E9EDDE;
+  transition: left 0.3s ease;
+  z-index: 20; /* higher than main content */
+}
+
+/* Overlay stays above main content, but under header icons if needed */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 19; /* below sidebar (20) */
+}
+
+/* Header stays on top */
+.header {
+  position: fixed; /* keep always visible */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 30; /* top-most */
+}
+
+
+
+/* Ensure main content is below fixed header */
+main {
+  position: relative;
+  z-index: 1;
+  padding-top: 80px; /* header height (60px) + 20px gap */
+  padding-bottom: 20px;
+}
+
+/* Export container at bottom */
+.export-container {
+  max-width: 800px;       /* optional: keep it reasonable width */
+  margin: 0 auto;         /* center horizontally */
+  position: relative;     /* inside main flow */
+  bottom: 0;              /* optional if you want sticky bottom */
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Optional: make export container "sticky" at bottom of viewport */
+@media (min-height: 600px) {
+.export-container {
+    position: sticky;
+    bottom: 20px; /* 20px above bottom */
+}
+}
+
   

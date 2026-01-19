@@ -5,23 +5,22 @@
   <style>
     body { font-family: Arial; }
     h1 { text-align: center; }
-    .equation { margin-bottom: 20px; }
+    .function { margin-bottom: 24px; }
   </style>
+
 </head>
 <body>
 
-<h1>Equations Export</h1>
+<h1>Test - Rovnice</h1>
 
+<strong>Vyrieš rovnice:</strong>
 {% for eq in equations %}
-<div class="equation">
-  <strong>Vyrieš rovnicu:</strong>
-  <p>
-    {{ eq.equation if eq.equation is defined else eq["equation"] }}
-  </p>
+<div class="function">
+    <p>
+        <img src="{{ eq.equation }}" alt="function formula">
+    </p>      
 </div>
 {% endfor %}
 
 </body>
 </html>
-
-

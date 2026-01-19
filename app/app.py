@@ -34,6 +34,9 @@ import math_engine.equations.exponential as ex
 import math_engine.functions.functions as func
 import sympy as sp
 
+from utils import latex_to_png, latex_to_png_eq
+
+
 WKHTMLTOPDF_PATH = os.path.join(os.path.dirname(__file__), "wkhtmltopdf.exe")
 pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
@@ -378,13 +381,13 @@ def export_pdf_generate():
 
     ids = request.args.get("ids")              # for existing
     gen_type = request.args.get("gen_type")    # for generate
-    gen_level = request.args.get("gen_level")  # equations only
+    if source != "existing":
+        gen_level = request.args.get("gen_level")  # equations only
+    else: 
+        gen_level = None
 
-    # --------------------------------------------------
-    # EQUATIONS
-    # --------------------------------------------------
+    # ------------------ EQUATIONS ------------------
     if export_type == "equations":
-
         # ---------- EXISTING EQUATIONS ----------
         if source == "existing":
             id_list = [int(i) for i in ids.split(",")]
@@ -401,10 +404,20 @@ def export_pdf_generate():
             # preserve selection order
             equations.sort(key=lambda e: id_list.index(e.id_equation))
 
-        # ---------- GENERATE NEW EQUATIONS ----------
-        else:
-            equations = []
+            # convert to dicts for PDF template
+            equations_for_pdf = [
+                {
+                    "equation": latex_to_png_eq(e.equation),  # use e.equation, NOT get_equation()
+                    "roots": str(e.roots),
+                    "steps": e.steps.split('\n')
+                }
+                for e in equations
+            ]
 
+        # ---------- GENERATED EQUATIONS ----------
+        else:
+            
+            equations_for_pdf = []
             for _ in range(limit):
                 if gen_type == "logarithmic-substitute":
                     eq = log.Substitution(gen_level)
@@ -419,41 +432,51 @@ def export_pdf_generate():
                 else:
                     continue
 
-                equations.append({
-                    "equation": str(eq.get_equation()),
+
+                equations_for_pdf.append({  # convert to dicts for PDF templat
+                    "equation": latex_to_png_eq(eq.get_equation()),  # generated objects still use get_equation()
                     "roots": str(eq.get_roots()),
                     "steps": eq.get_steps()
                 })
 
+        # else:
+        #     equations_for_pdf = []
+        #     for _ in range(limit):
+        #         if gen_type == "logarithmic-substitute":
+        #             eq = log.Substitution(gen_level)
+        #         elif gen_type == "logarithmic-mixed":
+        #             eq = log.Mixed_methods(gen_level)
+        #         elif gen_type == "exponential-substitute":
+        #             eq = ex.Substitution(gen_level)
+        #         elif gen_type == "exponential-match":
+        #             eq = ex.Matching_bases(gen_level)
+        #         elif gen_type == "exponential-log":
+        #             eq = ex.Logarithm(gen_level)
+        #         else:
+        #             continue
+        #         equations_for_pdf.append({
+        #             "equation": latex_to_png_eq(eq.get_equation()),
+        #             "roots": str(eq.get_roots()),
+        #             "steps": eq.get_steps()
+        #         })
+
         html = render_template(
             f"pdf/{template}_equations.html",
-            equations=equations,
+            equations=equations_for_pdf,
             user=current_user
         )
 
-    # --------------------------------------------------
-    # FUNCTIONS
-    # --------------------------------------------------
-    # --------------------------------------------------
-# FUNCTIONS
-# --------------------------------------------------
+    # ------------------ FUNCTIONS ------------------
     else:
+        functions_for_pdf = []
 
-        pdf_functions = []
-
-        # ---------- EXISTING FUNCTIONS ----------
         if source == "existing":
             id_list = [int(i) for i in ids.split(",")]
-
             db_functions = (
                 Function.query
-                .filter(
-                    Function.id.in_(id_list),
-                    Function.id_user == current_user.id
-                )
+                .filter(Function.id.in_(id_list), Function.id_user == current_user.id)
                 .all()
             )
-
             db_functions.sort(key=lambda f: id_list.index(f.id))
 
             for f in db_functions:
@@ -464,49 +487,52 @@ def export_pdf_generate():
                     'val_v': f.val_v,
                     'val_n': f.val_n,
                     'val_k': f.val_k,
-                    'val_px': sp.sympify(f.val_px) if f.val_px not in (None, 'None') else None,
-                    'val_py': sp.sympify(f.val_py) if f.val_py not in (None, 'None') else None
+                    'val_px': f.val_px,
+                    'val_py': f.val_py
                 }
+                if f.type == 'logarithmic':
+                    latex_formula = func.Logarithmic(coefs).get_latex_formula()
+                else:
+                    latex_formula = func.Exponential(coefs).get_latex_formula()
 
-                fn = (
-                    func.Logarithmic(coefs)
-                    if f.type == "logarithmic"
-                    else func.Exponential(coefs)
-                )
+                img_src = latex_to_png(latex_formula)
 
-                pdf_functions.append({
+                functions_for_pdf.append({
                     "type": f.type,
-                    "latex": fn.get_latex_formula(),
+                    "img": img_src,
                     "coefficients": coefs
                 })
 
-        # ---------- GENERATE NEW FUNCTIONS ----------
         else:
             for _ in range(limit):
-                fn = (
-                    func.Logarithmic()
-                    if gen_type == "logarithmic"
-                    else func.Exponential()
-                )
-
-                pdf_functions.append({
+                fn = func.Logarithmic() if gen_type == "logarithmic" else func.Exponential()
+                latex_formula = fn.get_latex_formula()
+                img_src = latex_to_png(latex_formula)
+                functions_for_pdf.append({
                     "type": fn.type,
-                    "latex": fn.get_latex_formula(),
+                    "img": img_src,
                     "coefficients": fn.get_coefficients()
                 })
 
         html = render_template(
             f"pdf/{template}_functions.html",
-            functions=pdf_functions,
-            user=current_user
+            functions=functions_for_pdf
         )
 
+    # ------------------ GENERATE PDF ------------------
+    options = {
+        "enable-local-file-access": "",  # safe fallback
+        "quiet": ""
+    }
 
-    # --------------------------------------------------
-    # CREATE PDF
-    # --------------------------------------------------
-    pdf = pdfkit.from_string(html, False, configuration=pdfkit_config)
+    pdf = pdfkit.from_string(
+        html,
+        False,
+        configuration=pdfkit_config,
+        options=options
+    )
 
+    # Return PDF to client browser
     return Response(
         pdf,
         mimetype="application/pdf",
@@ -515,16 +541,20 @@ def export_pdf_generate():
         }
     )
 
-
-
+# ---------------- API ----------------
 @app.route("/api/equations")
 @login_required
 def api_equations():
     equations = Equation.query.filter_by(id_user=current_user.id).all()
     return jsonify([
-        {"id": e.id_equation, "label": e.equation}
+        {
+            "id": e.id_equation,
+            # Use plain string for display in the picker
+            "label": e.equation  # previously maybe returned sympy object
+        }
         for e in equations
     ])
+
 
 @app.route("/api/functions")
 @login_required
@@ -541,22 +571,24 @@ def api_functions():
             'val_v': f.val_v,
             'val_n': f.val_n,
             'val_k': f.val_k,
-            'val_px': sp.sympify(f.val_px) if f.val_px not in (None, 'None') else None,
-            'val_py': sp.sympify(f.val_py) if f.val_py not in (None, 'None') else None
+            'val_px': f.val_px if f.val_px not in (None, 'None') else None,
+            'val_py': f.val_py if f.val_py not in (None, 'None') else None
         }
 
-        fn = (
-            func.Logarithmic(coefs)
-            if f.type == "logarithmic"
-            else func.Exponential(coefs)
-        )
+        # For display in picker, use plain string
+        label = ""
+        if f.type == "logarithmic":
+            label = str(func.Logarithmic(coefs).get_latex_formula())
+        else:
+            label = str(func.Exponential(coefs).get_latex_formula())
 
         result.append({
             "id": f.id,
-            "label": fn.get_latex_formula()   # 👈 THIS IS THE KEY
+            "label": label
         })
 
     return jsonify(result)
+
 
 
 

@@ -155,6 +155,8 @@ class Exponential(Function):
             ax.plot(line.get_xdata(), line.get_ydata(), **kwargs)
         plt.close(fig)
 
+    
+
 
 
 
