@@ -937,3 +937,139 @@ main {
   color: #052f5f;
   transform: translateY(-1px);
 }
+
+/* ---------- HEADER FINAL POLISH ---------- */
+
+/* Stronger shadow + rounded edges */
+.header {
+  height: 72px;
+  padding: 0 20px;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45); /* BIGGER shadow */
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+/* Adjust main spacing for thicker header */
+main {
+  padding-top: 92px;
+}
+
+/* ---------- HEADER BUTTONS (RIGHT SIDE) ---------- */
+.header .hover-item {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none; /* removes underline (Export to PDF) */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Lift effect */
+.header .hover-item:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- EQUATIONS HEADER ---------- */
+.header.equations {
+  background-color: #52682D;
+}
+
+.header.equations .hover-item {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+.header.equations .hover-item:hover {
+  background-color: white;
+}
+
+/* ---------- FUNCTIONS HEADER ---------- */
+.header.functions {
+  background-color: #052f5f;
+}
+
+/* Functions header buttons match Details style */
+.header.functions .hover-item {
+  background-color: #052f5f;
+  color: white;
+  border: 2px solid #E6EEF7;
+}
+
+.header.functions .hover-item:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+}
+
+
+
+/* ---------- HEADER REFINEMENT ---------- */
+
+/* Remove rounded edges, keep strong shadow */
+.header {
+  border-radius: 0;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- MOVE TITLE SLIGHTLY LEFT ---------- */
+.header .center {
+  transform: translateX(-40px); /* subtle, visual correction */
+}
+
+/* Title stays readable */
+.header .title {
+  font-size: 22px;
+  letter-spacing: 0.4px;
+}
+
+/* ---------- HEADER BUTTON BASE ---------- */
+.header .hover-item {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none; /* removes underline */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.header .hover-item:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- EQUATIONS HEADER BUTTON ---------- */
+.header.equations .hover-item {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+.header.equations .hover-item:hover {
+  background-color: #52682D;
+  color: #E9EDDE;
+}
+
+/* ---------- FUNCTIONS HEADER BUTTON (NO BORDER) ---------- */
+.header.functions .hover-item {
+  background-color: #E6EEF7;
+  color: #052f5f;
+  border: none; /* remove edging */
+}
+
+.header.functions .hover-item:hover {
+  background-color: #052f5f;
+  color: #E6EEF7;
+}
+
+
+
+
+/* ---------- EXPORT BUTTON HOVER (MOVE ONLY) ---------- */
+
+/* Shared base (already styled) */
+.header .hover-item {
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+/* Hover = lift only, no color change */
+.header .hover-item:hover {
+  transform: translateY(-2px);
+}
+
