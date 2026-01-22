@@ -44,11 +44,11 @@
 <!-- Header -->
 <div class="header {{ active }}">
     <div class="left">
-      <label for="sidebar-toggle" class="sidebar-icon">☰</label>
+      <label for="sidebar-toggle" class="sidebar-icon {{ active }}">☰</label>
     </div>
   
     <div class="center">
-      <p class="title">
+      <p class="title {{ active }}">
         {% if active == "equations" %}Equations
         {% elif active == "functions" %}Functions
         {% elif active == "generate" %}Generate

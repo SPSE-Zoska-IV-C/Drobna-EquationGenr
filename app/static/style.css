@@ -1073,3 +1073,419 @@ main {
   transform: translateY(-2px);
 }
 
+
+.title.functions {
+  color: #E6EEF7;
+}
+
+
+.sidebar-icon.functions {
+  color: #E6EEF7;
+}
+
+/* .sidebar-icon:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+} */
+
+
+/* ---------- SIDEBAR REFINEMENT ---------- */
+#sidebar {
+  padding-top: 80px;               /* keep content below header */
+  width: 260px;
+  background-color: #E9EDDE;       /* default neutral */
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2); /* subtle depth */
+  border-top-right-radius: 18px;   /* rounded like header edges */
+  border-bottom-right-radius: 18px;
+  overflow-y: auto;                /* scroll if content exceeds height */
+  z-index: 20;
+}
+
+
+
+/* Sidebar items */
+.sidebar-item {
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  margin: 8px 12px;               /* spacing between items */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+
+
+/* Hover effects (match header styling) */
+#sidebar.equations .sidebar-item:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+  transform: translateX(2px);
+}
+
+#sidebar.functions .sidebar-item:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+  transform: translateX(2px);
+}
+
+#sidebar.generate .sidebar-item:hover {
+  background-color: #d6b065;
+  color: #52682D;
+  transform: translateX(2px);
+}
+
+/* Links inside sidebar items */
+#sidebar a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ---------- Generate submenu ---------- */
+.generate-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 12px;               /* indent submenu */
+}
+
+.generate:hover .generate-submenu {
+  max-height: 200px;                /* enough to fit submenu items */
+}
+
+.submenu-item {
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover for submenu items */
+#sidebar.equations .submenu-item:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+#sidebar.functions .submenu-item:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+}
+
+#sidebar.generate .submenu-item:hover {
+  background-color: #d6b065;
+  color: #52682D;
+}
+
+/* Scrollbar styling for sidebar */
+#sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+/* Active sidebar item highlight */
+.sidebar-item.active {
+  box-shadow: inset 4px 0 0 0 #052f5f; /* small left indicator */
+}
+
+
+/* ---------- SIDEBAR REFINEMENT (SWITCHED COLORS & EDGED) ---------- */
+#sidebar {
+  padding-top: 80px;              /* keep content below header */
+  width: 260px;
+  background-color: #052f5f;      /* default switched color */
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.35); /* stronger edge shadow */
+  border-top-right-radius: 0;     /* remove rounding */
+  border-bottom-right-radius: 0;
+  border-right: 3px solid #E6EEF7; /* strong right edge line */
+  overflow-y: auto;               /* scroll if needed */
+  z-index: 20;
+}
+
+/* Active theme colors */
+#sidebar.equations {
+  background-color: #52682D;
+  border-right: 3px solid #E9EDDE;
+}
+
+#sidebar.functions {
+  background-color: #052f5f;
+  border-right: 3px solid #E6EEF7;
+}
+
+#sidebar.generate {
+  background-color: #d6b065;
+  border-right: 3px solid #52682D;
+}
+
+/* Sidebar items */
+.sidebar-item {
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0;                  /* spacing between items */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+/* Text colors per route */
+.sidebar-item.equations {
+  color: #E9EDDE;
+}
+
+.sidebar-item.functions {
+  color: #E6EEF7;
+}
+
+.sidebar-item.generate {
+  color: #52682D;
+}
+
+/* Hover effects (match header styling) */
+#sidebar.equations .sidebar-item:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+  transform: translateX(2px);
+}
+
+#sidebar.functions .sidebar-item:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+  transform: translateX(2px);
+}
+
+#sidebar.generate .sidebar-item:hover {
+  background-color: #d6b065;
+  color: #52682D;
+  transform: translateX(2px);
+}
+
+/* Links inside sidebar items */
+#sidebar a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ---------- Generate submenu ---------- */
+.generate-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 12px;              /* indent submenu */
+}
+
+.generate:hover .generate-submenu {
+  max-height: 200px;               /* enough to fit submenu items */
+}
+
+.submenu-item {
+  padding: 10px 30px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover for submenu items */
+#sidebar.equations .submenu-item:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+#sidebar.functions .submenu-item:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+}
+
+#sidebar.generate .submenu-item:hover {
+  background-color: #d6b065;
+  color: #52682D;
+}
+
+/* Scrollbar styling for sidebar */
+#sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 0;                /* sharp scrollbar */
+}
+
+/* Active sidebar item highlight */
+.sidebar-item.active {
+  box-shadow: inset 4px 0 0 0 #E9EDDE; /* left-edge indicator */
+}
+
+
+
+/* ---------- SIDEBAR REFINEMENT (LIGHT PANEL, DARK EDGE) ---------- */
+#sidebar {
+  padding-top: 80px;               /* content below header */
+  width: 260px;
+  background-color: #E9EDDE;       /* LIGHT panel background */
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.35); /* shadow for edge */
+  border-right: 3px solid #52682D; /* DARK edge */
+  overflow-y: auto;                /* scroll if needed */
+  z-index: 20;
+}
+
+/* Active theme colors for panel edge */
+#sidebar.equations {
+  border-right: 3px solid #52682D;
+}
+
+#sidebar.functions {
+  border-right: 3px solid #052f5f;
+}
+
+#sidebar.generate {
+  border-right: 3px solid #d6b065;
+}
+
+/* Sidebar items */
+.sidebar-item {
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0;                   /* spacing between items */
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+
+
+
+
+/* Links inside sidebar items */
+#sidebar a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ---------- Generate submenu ---------- */
+.generate-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 12px;               /* indent submenu */
+}
+
+.generate:hover .generate-submenu {
+  max-height: 200px;                /* enough to fit submenu items */
+}
+
+.submenu-item {
+  padding: 10px 30px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover for submenu items */
+#sidebar.equations .submenu-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;                 /* LIGHT text */
+}
+
+#sidebar.functions .submenu-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;
+}
+
+#sidebar.generate .submenu-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;
+}
+
+/* Scrollbar styling for sidebar
+#sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 0;                /* sharp scrollbar */
+
+
+/* Active sidebar item highlight (left-edge indicator)
+.sidebar-item.active {
+  box-shadow: inset 4px 0 0 0 currentColor;
+} */
+
+
+/* Active theme colors */
+#sidebar.equations {
+  background-color: #E9EDDE;
+}
+
+#sidebar.functions {
+  background-color: #E6EEF7;
+}
+
+#sidebar.generate {
+  background-color: #E9EDDE;
+}
+
+
+/* Text colors per route
+.sidebar-item.equations {
+  color: #52682D;
+}
+
+.sidebar-item.functions {
+  color: #052f5f;
+}
+
+.sidebar-item.generate {
+  color: #d6b065;
+}
+ */
+
+/* Text colors per route (DARK text for light panel) */
+.sidebar-item.equations {
+  color: #52682D;
+}
+
+.sidebar-item.functions {
+  color: #052f5f;
+}
+
+.sidebar-item.generate {
+  color: #d6b065;
+}
+
+
+/* Hover effects: DARK background, LIGHT text */
+#sidebar.equations .sidebar-item:hover {
+  background-color: #52682D;       /* DARK background */
+  color: #E9EDDE;                  /* LIGHT text */
+  transform: translateX(2px);
+}
+
+#sidebar.functions .sidebar-item:hover {
+  background-color: #052f5f;
+  color: #E6EEF7;
+  transform: translateX(2px);
+}
+
+#sidebar.generate .sidebar-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;
+  transform: translateX(2px);
+}
+
+
+
