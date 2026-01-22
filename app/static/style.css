@@ -161,6 +161,11 @@
     color: #E9EDDE;
   }
   
+  #sidebar.function_details .sidebar-item:hover {
+    background-color: #052f5f;
+    color: #E9EDDE;
+  }
+
   #sidebar.functions .sidebar-item:hover {
     background-color: #052f5f;
     color: #E9EDDE;
@@ -1348,6 +1353,10 @@ main {
   border-right: 3px solid #052f5f;
 }
 
+#sidebar.function_details {
+  border-right: 3px solid #052f5f;
+}
+
 #sidebar.generate {
   border-right: 3px solid #d6b065;
 }
@@ -1435,6 +1444,10 @@ main {
   background-color: #E6EEF7;
 }
 
+#sidebar.function_details {
+  background-color: #E6EEF7;
+}
+
 #sidebar.generate {
   background-color: #E9EDDE;
 }
@@ -1467,6 +1480,9 @@ main {
   color: #d6b065;
 }
 
+.sidebar-item.function_details {
+  color: #052f5f;
+}
 
 /* Hover effects: DARK background, LIGHT text */
 #sidebar.equations .sidebar-item:hover {
@@ -1476,6 +1492,12 @@ main {
 }
 
 #sidebar.functions .sidebar-item:hover {
+  background-color: #052f5f;
+  color: #E6EEF7;
+  transform: translateX(2px);
+}
+
+#sidebar.function_details .sidebar-item:hover {
   background-color: #052f5f;
   color: #E6EEF7;
   transform: translateX(2px);
@@ -1673,4 +1695,83 @@ main {
     padding: 22px;
   }
 }
+
+
+
+
+
+/* ---------- FUNCTION DETAILS HEADER (EXACT MATCH TO FUNCTIONS) ---------- */
+
+/* Header base */
+.header.function_details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #052f5f;
+  height: 72px;
+  padding: 0 20px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  z-index: 30;
+}
+
+/* Header sections */
+.header.function_details .left,
+.header.function_details .center,
+.header.function_details .right {
+  display: flex;
+  align-items: center;
+}
+
+.header.function_details .left {
+  width: 60px;
+}
+
+.header.function_details .center {
+  flex: 1;
+  justify-content: center;
+  transform: translateX(-40px);
+}
+
+.header.function_details .right {
+  gap: 16px;
+}
+
+/* Title */
+.title.function_details {
+  color: #E6EEF7;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* Sidebar icon */
+.sidebar-icon.function_details {
+  color: #E6EEF7;
+}
+
+/* Header buttons (Export to PDF) */
+.header.function_details .hover-item {
+  background-color: #E6EEF7;
+  color: #052f5f;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.header.function_details .hover-item:hover {
+  background-color: #052f5f;
+  color: #E6EEF7;
+  transform: translateY(-2px);
+}
+
+/* Profile icon */
+.header.function_details .profile-icon {
+  color: black;
+}
+
+
 
