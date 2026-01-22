@@ -1488,4 +1488,189 @@ main {
 }
 
 
+/* ---------- GENERATE HEADER (EXACT MATCH FIX) ---------- */
+
+/* FORCE header back to row layout (fix column bug) */
+.header.generate {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #d6b065;
+  height: 72px;
+  padding: 0 20px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  z-index: 30;
+}
+
+/* Ensure header sections behave like other pages */
+.header.generate .left,
+.header.generate .center,
+.header.generate .right {
+  display: flex;
+  align-items: center;
+}
+
+.header.generate .left {
+  width: 60px;
+}
+
+.header.generate .center {
+  flex: 1;
+  justify-content: center;
+  transform: translateX(-40px); /* SAME correction as others */
+}
+
+.header.generate .right {
+  gap: 16px;
+}
+
+/* Title */
+.title.generate {
+  color: #F3E7C6;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* Sidebar icon */
+.sidebar-icon.generate {
+  color: #F3E7C6;
+}
+
+/* Header buttons (Export to PDF) — EXACT equations behavior */
+.header.generate .hover-item {
+  background-color: #F3E7C6;
+  color: #d6b065;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.header.generate .hover-item:hover {
+  background-color: #d6b065;
+  color: #F3E7C6;
+  transform: translateY(-2px);
+}
+
+/* Profile icon consistency */
+.header.generate .profile-icon {
+  color: black;
+}
+
+
+/* ---------- GENERATE PAGE DESIGN (MATCHES EQUATIONS / FUNCTIONS) ---------- */
+
+/* Page background */
+.header.generate ~ main {
+  background-color: white;
+}
+
+/* Main container */
+.generate-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* Page title */
+.generate-container h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #d6b065;
+  margin-bottom: 24px;
+}
+
+/* ---------- FORM CARD ---------- */
+.generate-container form {
+  background-color: #F3E7C6;
+  border: 2px solid #d6b065;
+  border-radius: 22px;
+  padding: 28px;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Lift on hover (same feel as cards) */
+.generate-container form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- FORM GROUPS ---------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+.form-group label {
+  font-weight: 600;
+  color: #d6b065;
+}
+
+/* Inputs & selects */
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #d6b065;
+  background-color: white;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus state */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #d6b065;
+  box-shadow: 0 0 0 3px rgba(214, 176, 101, 0.35);
+}
+
+/* ---------- SUBMIT BUTTON ---------- */
+.generate-container input[type="submit"],
+.generate-container button {
+  margin-top: 12px;
+  align-self: flex-end;
+
+  padding: 10px 20px;
+  background-color: #d6b065;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover behavior */
+.generate-container input[type="submit"]:hover,
+.generate-container button:hover {
+  background-color: #F3E7C6;
+  color: #d6b065;
+  transform: translateY(-1px);
+}
+
+/* ---------- MOBILE SAFETY ---------- */
+@media (max-width: 600px) {
+  .generate-container {
+    padding: 24px 16px;
+  }
+
+  .generate-container form {
+    padding: 22px;
+  }
+}
 
