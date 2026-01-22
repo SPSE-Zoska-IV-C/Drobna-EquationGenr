@@ -1774,4 +1774,77 @@ main {
 }
 
 
+/* ---------- FUNCTION DETAILS PAGE ---------- */
 
+.header.function_details ~ main {
+  background-color: white;
+}
+
+/* Main container */
+.function-details-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Shared card style (matches Functions cards) */
+.fd-card {
+  background-color: #E6EEF7;
+  color: #052f5f;
+
+  border-radius: 22px;
+  border: 2px solid #052f5f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Lift on hover */
+.fd-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Card titles */
+.fd-card h2,
+.fd-card h3 {
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #052f5f;
+}
+
+/* Info rows */
+.fd-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.fd-label {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.fd-value {
+  font-size: 16px;
+}
+
+/* Math block spacing */
+.fd-math {
+  font-size: 18px;
+}
+
+/* Graph containers */
+.fd-graph {
+  width: 100%;
+  height: 420px;
+  margin-top: 10px;
+}

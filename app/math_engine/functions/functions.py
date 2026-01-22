@@ -46,12 +46,12 @@ class Exponential(Function):
     def get_parameters(self):
         self.parameters = dict()
         self.parameters.update({
-                                'D(f)': ('minus infinity', 'infinity'),
-                                'H(f)': (0 + self.coefficients['val_k'], 'infinity'),
-                                'Px': (self.coefficients['val_px'], 0),
-                                'Py': (0, self.coefficients['val_py']),
+                                'D(f)': ('-∞', '∞'),
+                                'H(f)': (0 + self.coefficients['val_k'], '∞'),
+                                'Px': [self.coefficients['val_px'], 0] if self.coefficients['val_px'] != None else 'Doesnt exist',
+                                'Py': [0, self.coefficients['val_py']],
                                 'parity': 'none',
-                                'boundaries': (0 + self.coefficients['val_k'], None), 
+                                'boundaries': (f'max: {0 + self.coefficients['val_k']}', 'min: Doesnt exist'), 
                                 'monotony': 'decreasing' if self.coefficients['val_bd'] != 1 else 'increasing',
                                 'symetheticity': 'asymetric'})
         return self.parameters
@@ -200,12 +200,12 @@ class Logarithmic(Function):
     def get_parameters(self):
         self.parameters = dict()
         self.parameters.update({
-                                'D(f)': (0 + self.coefficients['val_k'], 'infinity'),
-                                'H(f)': ('minus infinity', 'infinity'),
-                                'Px': (self.coefficients['val_px'], 0),
-                                'Py': (0, self.coefficients['val_py']),
+                                'D(f)': (0 + self.coefficients['val_k'], '∞'),
+                                'H(f)': ('-∞', '∞'),
+                                'Px': [self.coefficients['val_px'], 0],
+                                'Py': [0, self.coefficients['val_py']] if self.coefficients['val_py'] != None else 'Doesnt exist',
                                 'parity': 'none',
-                                'boundaries': (None, None), 
+                                'boundaries': ('max: Doesnt exist', 'min: Doesnt exist'), 
                                 'monotony': 'decreasing' if self.coefficients['val_bd'] != 1 else 'increasing',
                                 'symetheticity': 'asymetric'})
 

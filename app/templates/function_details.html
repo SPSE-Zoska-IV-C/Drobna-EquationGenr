@@ -5,20 +5,42 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <h2>Function Details</h2>
+<div class="function-details-container">
 
-    <p>Function formula: $$ {{ func.get_latex_formula() }} $$</p>
-    <p>Function type: {{ func.get_type() }}</p>
+    <!-- INFO CARD -->
+    <div class="fd-card fd-info">
+      <h2>Function Details</h2>
+  
+      <div class="fd-row">
+        <span class="fd-label">Formula</span>
+        <div class="fd-math">$$ {{ func.get_latex_formula() }} $$</div>
+      </div>
+  
+      <div class="fd-row">
+        <span class="fd-label">Type:</span>
+        <span class="fd-value">{{ func.get_type() }}</span>
+      </div>
+  
+      <div class="fd-row">
+        <span class="fd-label">Parameters:</span>
+        {% for key in func.get_parameters() %}
+          <span class="fd-value">{{ key }}: {{ func.get_parameters()[key] }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  
+    <!-- ORIGINAL GRAPH -->
+    <div class="fd-card">
+      <h3>Original Function</h3>
+      <div id="graph2" class="fd-graph"></div>
+    </div>
+  
+    <!-- INVERSE GRAPH -->
+    <div class="fd-card">
+      <h3>Inverse Function</h3>
+      <div id="graph1" class="fd-graph"></div>
+    </div>
 
-    <p>Parameters:</p>
-    <p>{{ func.get_parameters() }}</p>
-
-    <p>Graph 1: Original & Inverse</p>
-    <div id="graph1" style="width:100%; height:500px;"></div>
-
-    <p>Graph 2: Original only</p>
-    <div id="graph2" style="width:100%; height:500px;"></div>
 </div>
 
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
