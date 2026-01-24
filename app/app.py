@@ -366,7 +366,7 @@ def export_pdf_options():
 
     return render_template(
         "export_pdf_options.html",
-        active="To pdf"
+        active="export_pdf_options"
     )
 
 
@@ -539,6 +539,7 @@ def export_pdf_generate():
         headers={
             "Content-Disposition": "attachment; filename=export.pdf"
         }
+        
     )
 
 # ---------------- API ----------------

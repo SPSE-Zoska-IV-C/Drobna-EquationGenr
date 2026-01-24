@@ -370,10 +370,7 @@
     border-color: #52682D;
   }
 
-  #pdf-source-container {
-    border: 3px solid red;
-    padding: 20px;
-  }
+
   
   main {
     position: relative;
@@ -1415,6 +1412,13 @@ main {
   color: #E9EDDE;
 }
 
+#sidebar.export_pdf_options .submenu-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;
+}
+
+
+
 /* Scrollbar styling for sidebar
 #sidebar::-webkit-scrollbar {
   width: 8px;
@@ -1452,6 +1456,11 @@ main {
   background-color: #E9EDDE;
 }
 
+#sidebar.export_pdf_options {
+  background-color: #E9EDDE;
+}
+
+
 
 /* Text colors per route
 .sidebar-item.equations {
@@ -1480,6 +1489,10 @@ main {
   color: #d6b065;
 }
 
+.sidebar-item.export_pdf_options {
+  color: #d6b065;
+}
+
 .sidebar-item.function_details {
   color: #052f5f;
 }
@@ -1504,6 +1517,12 @@ main {
 }
 
 #sidebar.generate .sidebar-item:hover {
+  background-color: #d6b065;
+  color: #E9EDDE;
+  transform: translateX(2px);
+}
+
+#sidebar.export_pdf_options .sidebar-item:hover {
   background-color: #d6b065;
   color: #E9EDDE;
   transform: translateX(2px);
@@ -1561,6 +1580,12 @@ main {
   color: #F3E7C6;
 }
 
+/* Sidebar icon */
+.sidebar-icon.export_pdf_options {
+  color: #F3E7C6;
+}
+
+
 /* Header buttons (Export to PDF) — EXACT equations behavior */
 .header.generate .hover-item {
   background-color: #F3E7C6;
@@ -1577,6 +1602,24 @@ main {
   color: #F3E7C6;
   transform: translateY(-2px);
 }
+
+.header.export_pdf_options .hover-item {
+  background-color: #F3E7C6;
+  color: #d6b065;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.header.export_pdf_options .hover-item:hover {
+  background-color: #d6b065;
+  color: #F3E7C6;
+  transform: translateY(-2px);
+}
+
+
 
 /* Profile icon consistency */
 .header.generate .profile-icon {
@@ -1768,6 +1811,13 @@ main {
   transform: translateY(-2px);
 }
 
+.header.export_pdf_options .hover-item:hover {
+  background-color: #d6b065;
+  color: #F3E7C6;
+  transform: translateY(-2px);
+}
+
+
 /* Profile icon */
 .header.function_details .profile-icon {
   color: black;
@@ -1848,3 +1898,189 @@ main {
   height: 420px;
   margin-top: 10px;
 }
+
+
+/* ---------- EXPORT PDF PAGE (MATCH GENERATE) ---------- */
+
+/* Page background */
+.header.generate ~ main {
+  background-color: white;
+}
+
+/* Main container */
+.export-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* Page title */
+.export-container h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #d6b065;
+  margin-bottom: 24px;
+}
+
+/* ---------- MAIN FORM CARD ---------- */
+.export-container form {
+  background-color: #F3E7C6;
+  border: 2px solid #d6b065;
+  border-radius: 22px;
+  padding: 28px;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.export-container form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
+/* Labels */
+.export-container label {
+  font-weight: 600;
+  color: #d6b065;
+}
+
+/* Inputs & selects */
+.export-container input,
+.export-container select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #d6b065;
+  background-color: white;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.export-container input:focus,
+.export-container select:focus {
+  box-shadow: 0 0 0 3px rgba(214,176,101,0.35);
+}
+
+/* ---------- CONTENT BUTTON ---------- */
+#content-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  align-self: flex-start;
+
+  background-color: #d6b065;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#content-btn:hover {
+  background-color: #F3E7C6;
+  color: #d6b065;
+  transform: translateY(-1px);
+}
+
+/* ---------- PDF SOURCE CARD ---------- */
+#pdf-source-container {
+  margin-top: 28px;
+
+  background-color: #F3E7C6;
+  border: 2px solid #d6b065;
+  border-radius: 22px;
+  padding: 28px;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* Section titles */
+#pdf-source-container h3 {
+  color: #d6b065;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* ---------- ITEMS GRID ---------- */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+/* Selectable items */
+.select-item {
+  padding: 14px;
+  border: 2px solid #d6b065;
+  border-radius: 14px;
+  cursor: pointer;
+  background-color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  min-height: 80px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.select-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Selected state */
+.select-item.selected {
+  background-color: #d6b065;
+  color: white;
+  border-color: #d6b065;
+}
+
+/* Math formula inside cards */
+.math-formula {
+  font-size: 1.15em;
+  line-height: 1.4;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* ---------- GENERATE PDF BUTTON ---------- */
+#generate-pdf-btn {
+  margin-top: 24px;
+  padding: 12px 24px;
+  align-self: flex-end;
+
+  background-color: #d6b065;
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#generate-pdf-btn:hover:not(:disabled) {
+  background-color: #F3E7C6;
+  color: #d6b065;
+  transform: translateY(-1px);
+}
+
+#generate-pdf-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
