@@ -37,6 +37,9 @@ import sympy as sp
 from utils import latex_to_png, latex_to_png_eq
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from flask import flash
+
+
 
 
 WKHTMLTOPDF_PATH = os.path.join(os.path.dirname(__file__), "wkhtmltopdf.exe")
@@ -70,16 +73,15 @@ def login():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-
+        
         if user is None or not user.check_password(form.password.data):
-            return render_template(
-                'login.html',
-                form=form,
-                error="Invalid username or password"
-            )
+            flash("Invalid username or password", "danger")
+            return redirect(url_for('login'))
+
 
 
         login_user(user)
+        flash(f"Welcome back, {user.username}!", "success")
         return redirect(url_for('equations'))
 
     return render_template('login.html', form=form)
@@ -112,20 +114,20 @@ def register():
         # Check if username already exists
         existing_user = User.query.filter_by(username=form.username.data).first()
         if existing_user:
-            return render_template(
-                'register.html',
-                form=form,
-                error="Username already taken. Please choose another."
-            )
+            flash("Username already taken. Please choose another.", "danger")
+            return redirect(url_for('register'))
 
         # Create new user
         new_user = User(username=form.username.data)
         new_user.set_password(form.password.data)
 
+
         db.session.add(new_user)
         db.session.commit()
 
+        flash("Registration successful! Please log in.", "success")
         return redirect(url_for('login'))
+
 
     return render_template('register.html', form=form)
 
@@ -611,6 +613,7 @@ def api_functions():
 @login_required
 def logout():
     logout_user()
+    flash("You have been logged out.", "info")
     return redirect(url_for('login'))
 
 with app.app_context():

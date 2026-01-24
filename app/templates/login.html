@@ -7,18 +7,38 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body class="auth-page">
     <header class="header">
         <p class="title">ExpoLoGen</p>
     </header>
-    <div class="login-card">
-        <form method="post" class="register-login">
-            {{ form.hidden_tag() }}
-            {{ form.username.label }} <br> {{ form.username() }} <br>
-            {{ form.password.label }} <br> {{ form.password() }} <br>
-            {{ form.submit() }}
-        </form>
-        <p>Do not have an account yet? <a href="{{ url_for('register') }}">Register!</a></p><br>
-    </div>
+        <!-- Flash messages -->
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                {{ message }}
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+
+        <div class="login-card">
+            <form method="post" class="register-login">
+                {{ form.hidden_tag() }}
+                {{ form.username.label }} <br> {{ form.username() }} <br>
+                {{ form.password.label }} <br> {{ form.password() }} <br>
+                {{ form.submit() }}
+            </form>
+            <p>Do not have an account yet? <a href="{{ url_for('register') }}">Register!</a></p><br>
+        </div>
+    </main>
 </body>
+
 </html>

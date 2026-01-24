@@ -88,12 +88,27 @@
       </div>
 
     </div>
-  </div>
+</div>
   
 <!-- Main content -->
 <main>
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
   {% block content %}{% endblock %}
 </main>
+
 
 <script>
   const toggle = document.getElementById("accountToggle");
