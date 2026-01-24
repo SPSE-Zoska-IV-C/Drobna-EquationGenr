@@ -2233,3 +2233,219 @@ main {
   cursor: not-allowed;
 }
 
+
+/* ---------- ACCOUNT ICON ---------- */
+
+.account-wrapper {
+  position: relative;
+}
+
+.account-icon {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  border-radius: 50%;
+  object-fit: cover;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+
+/* ---------- ACCOUNT DROPDOWN ---------- */
+
+.account-dropdown {
+  position: absolute;
+  top: 52px;
+  right: 0;
+
+  min-width: 200px;
+  padding: 16px;
+
+  border-radius: 16px;
+  border: 2px solid var(--accent-color);
+
+  background-color: var(--panel-bg);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+
+  z-index: 1000;
+}
+
+/* Username text */
+.account-username {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.account-username strong {
+  color: var(--accent-color);
+  font-size: 15px;
+}
+
+/* Logout button */
+.logout-btn {
+  text-align: center;
+  padding: 10px;
+
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: var(--panel-bg);
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* Visible state */
+.account-dropdown.show {
+  display: flex;
+}
+
+
+/* ---------- ACCOUNT DROPDOWN (BASE CARD) ---------- */
+
+.account-wrapper {
+  position: relative;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: 54px;
+  right: 0;
+
+  min-width: 220px;
+  padding: 18px;
+
+  border-radius: 22px;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  z-index: 1000;
+}
+
+.account-dropdown.show {
+  display: flex;
+}
+
+/* Username */
+.account-username {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.account-username strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+
+
+.header.equations .account-dropdown {
+  background-color: #E9EDDE;
+  border: 2px solid #52682D;
+  color: #52682D;
+}
+
+.header.equations .account-username strong {
+  color: #52682D;
+}
+
+.header.equations .logout-btn {
+  background-color: #52682D;
+  color: #E9EDDE;
+}
+
+.header.equations .logout-btn:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+}
+
+
+
+.header.functions .account-dropdown,
+.header.function_details .account-dropdown {
+  background-color: #E6EEF7;
+  border: 2px solid #052f5f;
+  color: #052f5f;
+}
+
+.header.functions .account-username strong,
+.header.function_details .account-username strong {
+  color: #052f5f;
+}
+
+.header.functions .logout-btn,
+.header.function_details .logout-btn {
+  background-color: #052f5f;
+  color: #E6EEF7;
+}
+
+.header.functions .logout-btn:hover,
+.header.function_details .logout-btn:hover {
+  background-color: #E6EEF7;
+  color: #052f5f;
+}
+
+
+
+.header.generate .account-dropdown,
+.header.export_pdf_options .account-dropdown {
+  background-color: #F3E7C6;
+  border: 2px solid #d6b065;
+  color: #d6b065;
+}
+
+.header.generate .account-username strong,
+.header.export_pdf_options .account-username strong {
+  color: #d6b065;
+}
+
+.header.generate .logout-btn,
+.header.export_pdf_options .logout-btn {
+  background-color: #d6b065;
+  color: #F3E7C6;
+}
+
+.header.generate .logout-btn:hover,
+.header.export_pdf_options .logout-btn:hover {
+  background-color: #F3E7C6;
+  color: #d6b065;
+}
+
+
+
+.account-dropdown {
+  transform-origin: top right;
+  animation: dropdownFade 0.15s ease-out;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

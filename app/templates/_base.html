@@ -60,7 +60,33 @@
   
     <div class="right">
       <a class="hover-item" href="{{ url_for('export_pdf_options') }}">Export to PDF</a>      
-      <a class="profile-icon" href="{{ url_for('logout') }}">👤</a>
+      <div class="account-wrapper">
+        {% if active == 'functions' or active == 'function_details' %}
+          <img
+              src="{{ url_for('static', filename='images/account-fun.png') }}"
+              alt="Account"
+              class="account-icon"
+              id="accountToggle"
+          />
+        {% else %}
+          <img
+            src="{{ url_for('static', filename='images/account.png') }}"
+            alt="Account"
+            class="account-icon"
+            id="accountToggle"
+          />
+        {% endif %}
+        <div class="account-dropdown" id="accountDropdown">
+          <p class="account-username">
+              Logged in as<br>
+              <strong>{{ current_user.username }}</strong>
+          </p>
+          <a href="{{ url_for('logout') }}" class="logout-btn">
+            Log out
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
   
@@ -68,6 +94,23 @@
 <main>
   {% block content %}{% endblock %}
 </main>
+
+<script>
+  const toggle = document.getElementById("accountToggle");
+  const dropdown = document.getElementById("accountDropdown");
+
+  if (toggle && dropdown) {
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+      dropdown.classList.remove("show");
+    });
+  }
+</script>
+
 
 </body>
 </html>
