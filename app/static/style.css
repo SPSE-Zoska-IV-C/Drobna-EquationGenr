@@ -1131,8 +1131,8 @@ main {
 }
 
 #sidebar.generate .sidebar-item:hover {
-  background-color: #d6b065;
-  color: #52682D;
+  background-color: #E9EDDE;
+  color: #d6b065;
   transform: translateX(2px);
 }
 
@@ -1174,8 +1174,8 @@ main {
 }
 
 #sidebar.generate .submenu-item:hover {
-  background-color: #d6b065;
-  color: #52682D;
+  background-color: #E9EDDE;
+  color: #d6b065;
 }
 
 /* Scrollbar styling for sidebar */
@@ -1223,8 +1223,8 @@ main {
 }
 
 #sidebar.generate {
-  background-color: #d6b065;
-  border-right: 3px solid #52682D;
+  background-color: #E9EDDE;
+  border-right: 3px solid #d6b065;
 }
 
 /* Sidebar items */
@@ -1246,7 +1246,7 @@ main {
 }
 
 .sidebar-item.generate {
-  color: #52682D;
+  color: #E9EDDE;
 }
 
 /* Hover effects (match header styling) */
@@ -1263,8 +1263,8 @@ main {
 }
 
 #sidebar.generate .sidebar-item:hover {
-  background-color: #d6b065;
-  color: #52682D;
+  background-color: #E9EDDE;
+  color: #d6b065;
   transform: translateX(2px);
 }
 
@@ -1305,8 +1305,13 @@ main {
 }
 
 #sidebar.generate .submenu-item:hover {
-  background-color: #d6b065;
-  color: #52682D;
+  background-color: #E9EDDE;
+  color: #d6b065;
+}
+
+#sidebar.generate .submenu-item:hover {
+  background-color: #E9EDDE;
+  color: #d6b065;
 }
 
 /* Scrollbar styling for sidebar */
@@ -1358,6 +1363,12 @@ main {
   border-right: 3px solid #d6b065;
 }
 
+
+#sidebar.export_pdf_options {
+  border-right: 3px solid #d6b065;
+}
+
+
 /* Sidebar items */
 .sidebar-item {
   padding: 14px 24px;
@@ -1365,6 +1376,144 @@ main {
   font-weight: 600;
   margin: 8px 0;                   /* spacing between items */
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+
+
+
+
+
+
+
+/* ---------- AUTH PAGES (LOGIN / REGISTER) ---------- */
+
+.auth-page {
+  min-height: 100vh;
+  background-color: #E9EDDE;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.auth-page .header {
+  width: 100%;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #52682D;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.auth-page .title {
+  color: #E9EDDE;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+/* ---------- LOGIN / REGISTER CARD ---------- */
+.login-card {
+  margin-top: 80px;
+  width: 100%;
+  max-width: 420px;
+
+  background-color: #ffffff; 
+  border-radius: 22px;
+  border: 2px solid #52682D;
+
+  padding: 32px;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- FORM ---------- */
+.register-login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Labels */
+.register-login label {
+  font-weight: 600;
+  color: #52682D;
+}
+
+/* Inputs */
+.register-login input[type="text"],
+.register-login input[type="password"] {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #52682D;
+  font-size: 16px;
+
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.register-login input:focus {
+  box-shadow: 0 0 0 3px rgba(165, 214, 101, 0.35);
+}
+
+/* ---------- SUBMIT BUTTON ---------- */
+.register-login input[type="submit"] {
+  margin-top: 12px;
+
+  padding: 12px;
+  background-color: #52682D;
+  color: white;
+
+  border: none;
+  border-radius: 14px;
+
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.register-login input[type="submit"]:hover {
+  background-color: #E9EDDE;
+  color: #52682D;
+  transform: translateY(-1px);
+}
+
+/* ---------- FOOTER LINK ---------- */
+.login-card p {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+  color: #444;
+}
+
+.login-card a {
+  color: #52682D;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-card a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 480px) {
+  .login-card {
+    margin-top: 60px;
+    padding: 26px;
+  }
 }
 
 
@@ -1569,7 +1718,7 @@ main {
 
 /* Title */
 .title.generate {
-  color: #F3E7C6;
+  color: #E9EDDE;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -1577,18 +1726,18 @@ main {
 
 /* Sidebar icon */
 .sidebar-icon.generate {
-  color: #F3E7C6;
+  color: #E9EDDE;
 }
 
 /* Sidebar icon */
 .sidebar-icon.export_pdf_options {
-  color: #F3E7C6;
+  color: #E9EDDE;
 }
 
 
 /* Header buttons (Export to PDF) — EXACT equations behavior */
 .header.generate .hover-item {
-  background-color: #F3E7C6;
+  background-color: #E9EDDE;
   color: #d6b065;
   padding: 8px 16px;
   border-radius: 10px;
@@ -1599,12 +1748,12 @@ main {
 
 .header.generate .hover-item:hover {
   background-color: #d6b065;
-  color: #F3E7C6;
+  color: #E9EDDE;
   transform: translateY(-2px);
 }
 
 .header.export_pdf_options .hover-item {
-  background-color: #F3E7C6;
+  background-color: #E9EDDE;
   color: #d6b065;
   padding: 8px 16px;
   border-radius: 10px;
@@ -1615,7 +1764,7 @@ main {
 
 .header.export_pdf_options .hover-item:hover {
   background-color: #d6b065;
-  color: #F3E7C6;
+  color: #E9EDDE;
   transform: translateY(-2px);
 }
 
