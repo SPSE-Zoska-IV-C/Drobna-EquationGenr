@@ -82,15 +82,16 @@ def login():
 
         login_user(user)
         flash(f"Welcome back, {user.username}!", "success")
-        return redirect(url_for('equations'))
+        return redirect(url_for('home'))
 
     return render_template('login.html', form=form)
 
+
 @app.route("/")
-def index():
+@login_required
+def home():
     if current_user.is_authenticated:
-        return redirect(url_for("functions"))
-    return redirect(url_for("login"))
+        return render_template('home.html', active="home")
 
 
 

@@ -19,6 +19,9 @@
 <!-- Sidebar -->
 <div id="sidebar" class="{{ active }}">
   <p class="sidebar-item {{ active }}" >
+    <a href="{{ url_for('home') }}">Home</a>
+  </p>
+  <p class="sidebar-item {{ active }}" >
     <a href="{{ url_for('equations') }}">Equations</a>
   </p>
 
@@ -54,6 +57,7 @@
         {% elif active == "generate" %}Generate
         {% elif active == "function_details" %}Function details
         {% elif active == "export_pdf_options" %}Export to PDF
+        {% elif active == "home" %}Home
         {% else %}ExpoLoGen{% endif %}
       </p>
     </div>
@@ -61,7 +65,7 @@
     <div class="right">
       <a class="hover-item" href="{{ url_for('export_pdf_options') }}">Export to PDF</a>      
       <div class="account-wrapper">
-        {% if active == 'functions' or active == 'function_details' %}
+        {% if active == 'functions' or active == 'function_details' or active == 'home' %}
           <img
               src="{{ url_for('static', filename='images/account-fun.png') }}"
               alt="Account"

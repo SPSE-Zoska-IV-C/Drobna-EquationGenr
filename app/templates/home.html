@@ -1,0 +1,120 @@
+{% extends "_base.html" %}
+{% block title %}ExpoLoGen{% endblock %}
+
+{% block content %}
+
+<div class="home-wrapper">
+
+  <!-- WELCOME CARD -->
+  <section class="home-card welcome-card">
+    <h1>Welcome to ExpoLoGen!</h1> 
+    <br>
+    <p class="welcome-text">
+      ExpoLoGen is a powerful tool for generating, exploring, and exporting
+      mathematical equations and functions.  
+      Whether you’re studying, teaching, or documenting math, ExpoLoGen helps
+      you turn ideas into clean, export-ready results.
+    </p>
+  </section>
+
+  <!-- USER GUIDE -->
+  <section class="home-card guide-card">
+    <h2>User Guide</h2>
+
+    <!-- Tabs -->
+    <div class="guide-tabs">
+      <button class="guide-tab active" data-tab="generate">Generate</button>
+      <button class="guide-tab" data-tab="export">Export PDF</button>
+      <button class="guide-tab" data-tab="functions">Functions</button>
+      <button class="guide-tab" data-tab="details">Function Details</button>
+      <button class="guide-tab" data-tab="equations">Equations</button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="guide-content">
+
+      <div class="guide-panel active" id="generate">
+        <p>
+          Create equations and functions instantly using ExpoLoGen’s generators.
+        </p>
+
+        <div class="guide-images">
+          <div class="image-placeholder">Step image</div>
+          <div class="image-placeholder">Step image</div>
+        </div>
+      </div>
+
+      <div class="guide-panel" id="export">
+        <p>
+          Export your work into clean, professional PDF documents.
+        </p>
+
+        <div class="guide-images">
+          <div class="template-placeholder">PDF Template A</div>
+          <div class="template-placeholder">PDF Template B</div>
+        </div>
+      </div>
+
+      <div class="guide-panel" id="functions">
+        <p>
+          Browse and manage generated mathematical functions.
+        </p>
+        <div class="guide-images">
+          <div class="image-placeholder">Functions view</div>
+        </div>
+      </div>
+
+      <div class="guide-panel" id="details">
+        <p>
+          Dive deeper into each function with detailed views and explanations.
+        </p>
+        <div class="guide-images">
+          <div class="image-placeholder">Details view</div>
+        </div>
+      </div>
+
+      <div class="guide-panel" id="equations">
+        <p>
+          View and organize generated equations in one place.
+        </p>
+        <div class="guide-images">
+          <div class="image-placeholder">Equations view</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="template-section">
+
+    <div class="template-card">
+      <h1>Template 1</h1>
+      <img src="{{ url_for('static', filename='images/template-1.png') }}" class="template-image">
+    </div>
+  
+    <div class="template-card">
+      <h1>Template 2</h1>
+      <img src="{{ url_for('static', filename='images/template-2.png') }}" class="template-image">
+    </div>
+  
+  </section>
+  
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll(".guide-tab");
+  const panels = document.querySelectorAll(".guide-panel");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      panels.forEach(p => p.classList.remove("active"));
+
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.tab).classList.add("active");
+    });
+  });
+</script>
+
+{% endblock %}
