@@ -32,8 +32,10 @@
         <div class="login-card">
             <form method="post" class="register-login">
                 {{ form.hidden_tag() }}
-                {{ form.username.label }} <br> {{ form.username() }} <br>
-                {{ form.password.label }} <br> {{ form.password() }} <br>
+                {{ form.username.label }}
+                {{ form.username() }} <br>
+                {{ form.password.label }}
+                 {{ form.password() }} <br>
                 {{ form.submit() }}
             </form>
             <p>Do not have an account yet? <a href="{{ url_for('register') }}">Register!</a></p><br>

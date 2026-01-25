@@ -192,8 +192,8 @@ def generate_functions():
                                     val_v=int(function.get_coefficients()['val_v']),
                                     val_n=int(function.get_coefficients()['val_n']),
                                     val_k=int(function.get_coefficients()['val_k']),
-                                    val_px=str(sp.sympify(function.get_coefficients()['val_px']).limit_denominator(100000) if not function.get_coefficients()['val_px'] in (None, 'None') else None),
-                                    val_py=str(sp.sympify(function.get_coefficients()['val_py']).limit_denominator(100000) if not function.get_coefficients()['val_py'] in (None, 'None') else None))
+                                    val_px=str(sp.sympify(function.get_coefficients()['val_px']) if not function.get_coefficients()['val_px'] in (None, 'None') else None),
+                                    val_py=str(sp.sympify(function.get_coefficients()['val_py']) if not function.get_coefficients()['val_py'] in (None, 'None') else None))
 
             db.session.add(new_function)
             db.session.commit()
