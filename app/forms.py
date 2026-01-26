@@ -3,17 +3,20 @@ from wtforms import StringField, IntegerField, TextAreaField, SubmitField, Passw
 from wtforms.validators import DataRequired, Email, EqualTo
 
 class CreateEquationForm(FlaskForm):
-    type = SelectField('Type', choices=[('logarithmic-substitute', 'logarithmic substitute'),
-                                        ('logarithmic-mixed', 'logarithmic mixed methods'), 
-                                        ('exponential-substitute', 'exponential substitute'),
-                                        ('exponential-match', 'exponential match'),
-                                        ('exponential-log', 'exponential log')])
+    type = SelectField('Type', choices=[('logarithmic-substitute', 'logarithmic - solved by substitution'),
+                                        ('logarithmic-mixed', 'logarithmic - solved by logarithm rules'),
+                                        ('logarithmic-random', 'logarithmic - random methods of solving'),
+                                        ('exponential-substitute', 'exponential - solved by substitution'),
+                                        ('exponential-match', 'exponential - solved by converting it to same base'),
+                                        ('exponential-log', 'exponential - solved by logarithms'),
+                                        ('exponential-random', 'exponential - random methods of solving'),
+                                        ('random', 'random equations')])
     level = SelectField('Level', choices=[('simple', 'simple'), ('advanced', 'advanced')])
     number = IntegerField('Number', validators=[DataRequired()])
     submit = SubmitField('Create')
 
 class CreateFunctionForm(FlaskForm):
-    type = SelectField('Type', choices=[('logarithmic', 'logarithmic'), ('exponential', 'exponential')])
+    type = SelectField('Type', choices=[('logarithmic', 'logarithmic functions'), ('exponential', 'exponential functions'), ('random', 'random functions')])
     number = IntegerField('Number', validators=[DataRequired()])
     submit = SubmitField('Create')
 

@@ -2648,7 +2648,7 @@ main {
 .template-placeholder {
   flex: 1;
   min-width: 240px;
-  height: 150px;
+  height: 200px;
 
   border-radius: 18px;
   background: repeating-linear-gradient(
@@ -2737,10 +2737,10 @@ main {
 .template-placeholder {
   flex: 1;
   min-width: 240px;
-  height: 150px;
+  height: 300px;
 
   border-radius: 18px;
-  border: 2px dashed #052f5f;
+
 
   background: linear-gradient(
     135deg,
