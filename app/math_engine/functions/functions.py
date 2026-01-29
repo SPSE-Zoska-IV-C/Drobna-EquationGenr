@@ -10,7 +10,7 @@ from scipy.optimize import brentq
 class Exponential(Function):
     def __init__(self, coefficients=None):
         super().__init__(coefficients)
-        self.type = 'exponential'
+        self.type = 'exponential function'
 
     def create_coefficients(self):
         self.coefficients = dict()
@@ -167,7 +167,7 @@ class Exponential(Function):
 class Logarithmic(Function):
     def __init__(self, coefficients=None):
         super().__init__(coefficients)
-        self.type = 'logarithmic'
+        self.type = 'logarithmic function'
 
     def create_coefficients(self):
         self.coefficients = dict()

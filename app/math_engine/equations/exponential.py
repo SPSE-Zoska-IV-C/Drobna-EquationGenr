@@ -30,7 +30,7 @@ class Substitution(Method):
         t = sp.symbols('t')
         
         # quadratic equation
-        quad_eq = sp.latex(sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0))
+        quad_eq = sp.Eq(self.val_a * (t ** 2) + self.val_b * t + self.val_c, 0)
         
         self.steps.append(r"x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}")
         self.steps.append('\n')
@@ -40,7 +40,7 @@ class Substitution(Method):
         self.steps.append('\n')
         self.steps.append(rf"a = {self.val_a}")
         self.steps.append('\n')
-        self.steps.append(quad_eq)
+        self.steps.append(sp.latex(quad_eq))
         self.steps.append('\n')
         self.steps.append(sp.latex(sp.Eq(sp.symbols('t'), self.val_r**sp.symbols("x"))))
         self.steps.append('\n')
@@ -85,9 +85,9 @@ class Substitution(Method):
                 left_side = func(left_side, n)
                 right_side = func(right_side, n)
 
-        if right_side != original_rs:
-            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
-            self.steps.append('\n')
+            if right_side != original_rs:
+                self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+                self.steps.append('\n')
 
 
         # Optionally wrap in parentheses or scale both sides
@@ -170,6 +170,8 @@ class Matching_bases(Method):
         if symb_x != sp.symbols('x'):
             self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
             self.steps.append('\n')
+        
+        old_r, old_l = right_side, left_side
 
         for function in modifs_base_signs:
             n = random.choice([1,2,4,5]) if random.choice([True, False]) else self.val_r ** self.val_x
@@ -181,8 +183,9 @@ class Matching_bases(Method):
             right_side = function(right_side, n)
             left_side = function(left_side, n)
         
-        self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
-        self.steps.append('\n')
+        if right_side != old_r or left_side != old_l:
+            self.steps.append(sp.latex(sp.Eq(left_side, right_side)))
+            self.steps.append('\n')
         self.equation = sp.Eq(left_side, right_side)
 
     def get_equation(self):
@@ -195,7 +198,7 @@ class Logarithm(Method):
         self.val_x = log10(self.number_right)/log10(self.number_left)
 
         self.roots = [self.val_x]
-        self.steps.append(sp.latex(f'K = {self.val_x}'))
+        self.steps.append(f'K = \\frac{{\\log({self.number_right})}}{{\\log({self.number_left})}}')
         self.steps.append('\n')
 
         if self.level == 'simple':
@@ -222,6 +225,11 @@ class Logarithm(Method):
         self.steps.append('\n')
 
     def create_advanced(self):
+        x = sp.symbols('x')
+        self.equation = sp.Eq(self.number_left ** x, self.number_right)
+        self.steps.append(sp.latex(self.equation))
+        self.steps.append('\n')
+
         modifs_exp_signs = random.choices([add, sub, mul], k=random.randint(1, 2))
         modifs_base_signs = random.choices([add, sub, mul, nmul, truediv, ndiv], k=random.randint(1, 2))
         
@@ -243,12 +251,11 @@ class Logarithm(Method):
                 self.number_right = self.number_right ** n
 
             symb_x = function(symb_x, n)
-        
-        
-        self.steps.append(sp.latex(sp.Eq(sp.symbols(f'{self.number_left}'), sp.symbols(f'{self.number_right}'))))
-        self.steps.append('\n')
-
         self.number_left = self.number_left ** symb_x
+
+        step = sp.Eq(self.number_left, self.number_right, evaluate=False)
+        self.steps.append(sp.latex(step))
+        self.steps.append('\n')
 
         for function in modifs_base_signs:
             n = random.choice([1,2,4,5])

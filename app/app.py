@@ -144,22 +144,25 @@ def generate_equations():
         if isinstance(form.number.data, str):
             flash("Please enter a number", "danger")
             return redirect(url_for('generate_equations'))
+        if form.number.data <= 0:
+            flash("Please enter a positive number", "danger")
+            return redirect(url_for('generate_equations'))
         for _ in range(form.number.data):
-            if form.type.data == 'logarithmic-substitute':
+            if form.type.data == 'logarithmic - solved by substitution':
                 equation = log.Substitution(form.level.data)
-            elif form.type.data == 'logarithmic-mixed':
+            elif form.type.data == 'logarithmic - solved by logarithm rules':
                 equation = log.Mixed_methods(form.level.data)
-            elif form.type.data == 'logarithmic-random':
+            elif form.type.data == 'logarithmic - random methods of solving':
                 equation = random.choice([log.Substitution(form.level.data), log.Mixed_methods(form.level.data)])
-            elif form.type.data == 'exponential-substitute':
+            elif form.type.data == 'exponential - solved by substitution':
                 equation = ex.Substitution(form.level.data)
-            elif form.type.data == 'exponential-match':
+            elif form.type.data == 'exponential - solved by converting it to same base':
                 equation = ex.Matching_bases(form.level.data)
-            elif form.type.data == 'exponential-log':
+            elif form.type.data == 'exponential - solved by logarithms':
                 equation = ex.Logarithm(form.level.data)
-            elif form.type.data == 'exponential-random':
+            elif form.type.data == 'exponential - random methods of solving':
                 equation = random.choice([ex.Substitution(form.level.data), ex.Matching_bases(form.level.data), ex.Logarithm(form.level.data)])
-            elif form.type.data == 'random':
+            elif form.type.data == 'random equations':
                 equation = random.choice([log.Substitution(form.level.data), log.Mixed_methods(form.level.data), ex.Substitution(form.level.data), ex.Matching_bases(form.level.data), ex.Logarithm(form.level.data)])
 
             new_equation = Equation(id_user=current_user.id,
@@ -191,17 +194,23 @@ def generate_functions():
         if isinstance(form.number.data, str):
             flash("Please enter a number", "danger")
             return redirect(url_for('generate_functions'))
+        if form.number.data <= 0:
+            flash("Please enter a positive number", "danger")
+            return redirect(url_for('generate_functions'))
         
         for _ in range(form.number.data):
-            if form.type.data == 'random':
+            if form.type.data == 'random functions':
+                type_data = random.choice(['exponential functions', 'logarithmic functions'])
+                function = func.Exponential() if type_data == 'exponential functions' else func.Logarithmic()
+            elif form.type.data == 'exponential functions':
                 function = func.Exponential()
-            elif form.type.data == 'exponential':
-                function = func.Exponential()
-            elif form.type.data == 'logarithmic':
+                type_data = None
+            elif form.type.data == 'logarithmic functions':
                 function = func.Logarithmic()
-
+                type_data = None
+            print(form.type.data)
             new_function = Function(id_user=current_user.id,
-                                    type=form.type.data,
+                                    type= type_data if type_data is not None else form.type.data,
                                     val_a=int(function.get_coefficients()['val_a']),
                                     val_bn=int(function.get_coefficients()['val_bn']),
                                     val_bd=int(function.get_coefficients()['val_bd']),
@@ -255,7 +264,6 @@ def equations():
     todays_steps = [i.steps.split('\n') for i in todays_equations]
     history_steps = [i.steps.split('\n') for i in history_equations]
 
-
     return render_template(
         "equations.html",
         active="equations",
@@ -296,12 +304,10 @@ def functions():
             'val_py': sp.sympify(f_db.val_py) if f_db.val_py not in (None, 'None') else None
         }
 
-        if f_db.type == 'logarithmic':
+        if f_db.type == 'logarithmic functions':
             func_obj = func.Logarithmic(coefs)
-        elif f_db.type == 'exponential':
+        elif f_db.type == 'exponential functions':
             func_obj = func.Exponential(coefs)
-        elif f_db.type == 'random':
-            func_obj = random.choice([func.Exponential(), func.Logarithmic()])
 
         func_obj.id = f_db.id
         todays_functions.append(func_obj)
@@ -331,12 +337,11 @@ def functions():
 
         }
 
-        if f_db.type == 'logarithmic':
+        print('=====================================',f_db.type)
+        if f_db.type == 'logarithmic functions':
             func_obj = func.Logarithmic(coefs)
-        elif f_db.type == 'exponential':
+        elif f_db.type == 'exponential functions':
             func_obj = func.Exponential(coefs)
-        elif f_db.type == 'random':
-            func_obj = random.choice([func.Exponential(), func.Logarithmic()])
 
         func_obj.id = f_db.id
         history_functions.append(func_obj)
@@ -364,7 +369,7 @@ def function_details():
         'val_px': sp.sympify(function.val_px) if function.val_px not in (None, 'None') else None,
         'val_py': sp.sympify(function.val_py) if function.val_py not in (None, 'None') else None}
 
-    if function.type == 'logarithmic':
+    if function.type == 'logarithmic functions':
         func_obj = func.Logarithmic(coefs)
     else:
         func_obj = func.Exponential(coefs)
@@ -414,6 +419,9 @@ def export_pdf_generate():
     except:
         flash("Please enter a number", "danger")
         return redirect(url_for('export_pdf_generate'))
+    if limit <= 0:
+        flash("Please enter a positive number", "danger")
+        return redirect(url_for('export_pdf_generate'))
     source = request.args.get("source")
 
     ids = request.args.get("ids")              # for existing
@@ -456,21 +464,21 @@ def export_pdf_generate():
             
             equations_for_pdf = []
             for _ in range(limit):
-                if gen_type == "logarithmic-substitute":
+                if gen_type == "logarithmic - solved by substitution":
                     eq = log.Substitution(gen_level)
-                elif gen_type == "logarithmic-mixed":
+                elif gen_type == "logarithmic - solved by logarithm rules":
                     eq = log.Mixed_methods(gen_level)
-                elif gen_type == "logarithmic-random":
+                elif gen_type == "logarithmic - random methods of solving":
                     eq = random.choice([log.Substitution(gen_level), log.Mixed_methods(gen_level)])
-                elif gen_type == "exponential-substitute":
+                elif gen_type == "exponential - solved by substitution":
                     eq = ex.Substitution(gen_level)
-                elif gen_type == "exponential-match":
+                elif gen_type == "exponential - solved by converting it to same base":
                     eq = ex.Matching_bases(gen_level)
-                elif gen_type == "exponential-log":
+                elif gen_type == "exponential - solved by logarithms":
                     eq = ex.Logarithm(gen_level)
-                elif gen_type == "exponential-random":
+                elif gen_type == "exponential - random methods of solving":
                     eq = random.choice([ex.Substitution(gen_level), ex.Matching_bases(gen_level), ex.Logarithm(gen_level)])
-                elif gen_type == "random":
+                elif gen_type == "random equations":
                     eq = random.choice([log.Substitution(gen_level), log.Mixed_methods(gen_level), ex.Substitution(gen_level), ex.Matching_bases(gen_level), ex.Logarithm(gen_level)])
                 else:
                     continue
@@ -548,7 +556,7 @@ def export_pdf_generate():
 
         else:
             for _ in range(limit):
-                fn = random.choice([func.Logarithmic(), func.Exponential()]) if gen_type == "random" else func.Exponential() if gen_type == "exponential" else func.Logarithmic()
+                fn = random.choice([func.Logarithmic(), func.Exponential()]) if gen_type == "random functions" else func.Exponential() if gen_type == "exponential functions" else func.Logarithmic()
                 latex_formula = fn.get_latex_formula()
                 img_src = latex_to_png(latex_formula)
                 functions_for_pdf.append({

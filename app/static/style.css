@@ -2584,6 +2584,7 @@ main {
   font-size: 15px;
   line-height: 1.6;
   max-width: 800px;
+  color:#052f5f;
 }
 
 /* ---------- GUIDE TABS ---------- */
@@ -2754,6 +2755,7 @@ main {
 
   font-weight: 600;
   color: #052f5f;
+  max-width: 590px;
 }
 
 /* ---------- TEMPLATE SECTION (FUNCTIONS) ---------- */

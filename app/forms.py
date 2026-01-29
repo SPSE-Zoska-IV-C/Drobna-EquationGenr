@@ -3,20 +3,20 @@ from wtforms import StringField, IntegerField, TextAreaField, SubmitField, Passw
 from wtforms.validators import DataRequired, Email, EqualTo
 
 class CreateEquationForm(FlaskForm):
-    type = SelectField('Type', choices=[('logarithmic-substitute', 'logarithmic - solved by substitution'),
-                                        ('logarithmic-mixed', 'logarithmic - solved by logarithm rules'),
-                                        ('logarithmic-random', 'logarithmic - random methods of solving'),
-                                        ('exponential-substitute', 'exponential - solved by substitution'),
-                                        ('exponential-match', 'exponential - solved by converting it to same base'),
-                                        ('exponential-log', 'exponential - solved by logarithms'),
-                                        ('exponential-random', 'exponential - random methods of solving'),
-                                        ('random', 'random equations')])
+    type = SelectField('Type', choices=[('logarithmic - solved by substitution', 'logarithmic - solved by substitution'),
+                                        ('logarithmic - solved by logarithm rules', 'logarithmic - solved by logarithm rules'),
+                                        ('logarithmic - random methods of solving', 'logarithmic - random methods of solving'),
+                                        ('exponential - solved by substitution', 'exponential - solved by substitution'),
+                                        ('exponential - solved by converting it to same base', 'exponential - solved by converting it to same base'),
+                                        ('exponential - solved by logarithms', 'exponential - solved by logarithms'),
+                                        ('exponential - random methods of solving', 'exponential - random methods of solving'),
+                                        ('random equations', 'random equations')])
     level = SelectField('Level', choices=[('simple', 'simple'), ('advanced', 'advanced')])
     number = IntegerField('Number', validators=[DataRequired()])
     submit = SubmitField('Create')
 
 class CreateFunctionForm(FlaskForm):
-    type = SelectField('Type', choices=[('logarithmic', 'logarithmic functions'), ('exponential', 'exponential functions'), ('random', 'random functions')])
+    type = SelectField('Type', choices=[('logarithmic', 'logarithmic functions'), ('exponential', 'exponential functions'), ('random functions', 'random functions')])
     number = IntegerField('Number', validators=[DataRequired()])
     submit = SubmitField('Create')
 

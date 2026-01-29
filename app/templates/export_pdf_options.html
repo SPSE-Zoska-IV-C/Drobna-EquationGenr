@@ -19,8 +19,9 @@
     </select>
 
     <label>Number of items</label>
-    <input type="number" id="limit" min="1" max="100" value="10" required>
-
+    <input type="number" id="limit" min="1" max="20" value="10" required>
+    <div id="limit-flash" class="flash hidden"></div>
+    
     <label>Source</label>
     <select id="source" required>
       <option value="existing">Pick from existing ones</option>
@@ -40,14 +41,14 @@
       <div id="gen-equations" class="hidden">
         <label>Type</label>
         <select id="gen-eq-type">
-          <option value="logarithmic-substitute">logarithmic substitute</option>
-          <option value="logarithmic-mixed">logarithmic mixed methods</option>
-          <option value="logarithmic-random">logarithmic random</option>
-          <option value="exponential-substitute">exponential substitute</option>
-          <option value="exponential-match">exponential match</option>
-          <option value="exponential-log">exponential log</option>
-          <option value="exponential-random">exponential random</option>
-          <option value="random">random equations</option>
+          <option value="logarithmic - solved by substitution">logarithmic - solved by substitution</option>
+          <option value="logarithmic - solved by logarithm rules">logarithmic - solved by logarithm rules</option>
+          <option value="logarithmic - random methods of solving">logarithmic - random methods of solving</option>
+          <option value="exponential - solved by substitution">exponential - solved by substitution</option>
+          <option value="exponential - solved by converting it to same base">exponential - solved by converting it to same base</option>
+          <option value="exponential - solved by logarithms">exponential - solved by logarithms</option>
+          <option value="exponential - random methods of solving">exponential - random methods of solving</option>
+          <option value="random equations">random equations</option>
         </select>
 
         <label>Level</label>
@@ -60,9 +61,9 @@
       <div id="gen-functions" class="hidden">
         <label>Type</label>
         <select id="gen-fn-type">
-          <option value="logarithmic">logarithmic</option>
-          <option value="exponential">exponential</option>
-          <option value="random">random mix</option>
+          <option value="logarithmic functions">logarithmic functions</option>
+          <option value="exponential functions">exponential functions</option>
+          <option value="random functions">random mix of functions</option>
         </select>
       </div>
 
@@ -99,9 +100,66 @@ document.addEventListener("DOMContentLoaded", () => {
   const genNumber = document.getElementById("gen-number");
   const generatePdfBtn = document.getElementById("generate-pdf-btn");
 
+  const limitFlash = document.getElementById("limit-flash");
+
+  function showFlash(message, type="danger") {
+    limitFlash.textContent = message;
+    limitFlash.classList.remove("hidden", "flash-danger", "flash-success");
+    limitFlash.classList.add(type === "success" ? "flash-success" : "flash-danger");
+  }
+
+  function hideFlash() {
+    limitFlash.textContent = "";
+    limitFlash.classList.add("hidden");
+    limitFlash.classList.remove("flash-danger", "flash-success");
+  }
+
+  function validateLimit() {
+    const raw = limitInput.value;
+
+    // empty
+    if (raw === "" || raw === null || raw === undefined) {
+      showFlash("Please enter a number between 1 and 20.");
+      generatePdfBtn.disabled = true;
+      return false;
+    }
+
+    // if user types something like "abc"
+    const num = Number(raw);
+    if (Number.isNaN(num)) {
+      showFlash("Invalid input. Please enter a valid number.");
+      generatePdfBtn.disabled = true;
+      return false;
+    }
+
+    // float check
+    if (!Number.isInteger(num)) {
+      showFlash("Please enter a whole number (no decimals).");
+      generatePdfBtn.disabled = true;
+      return false;
+    }
+
+    // range check
+    if (num < 1 || num > 20) {
+      showFlash("Number must be between 1 and 20.");
+      generatePdfBtn.disabled = true;
+      return false;
+    }
+
+    // valid
+    hideFlash();
+    return true;
+  }
+
+
   let selectedItems = [];
 
   btn.addEventListener("click", async () => {
+    if (!validateLimit()) {
+      container.classList.add("hidden");
+      return;
+    }
+
     container.classList.remove("hidden");
     selectedItems = [];
     generatePdfBtn.disabled = true;
@@ -112,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await loadExistingItems();
     }
   });
+
 
   function showGenerateMode() {
     generatePreview.classList.remove("hidden");
@@ -131,8 +190,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   limitInput.addEventListener("input", () => {
+    const valid = validateLimit();
+
+    if (!valid) return;
+
     genNumber.value = limitInput.value;
+    requiredCount.textContent = limitInput.value;
+
+    // if existing mode -> reset selection because required count changed
+    if (!existingPicker.classList.contains("hidden")) {
+      selectedItems = [];
+      document.querySelectorAll(".select-item.selected").forEach(el => el.classList.remove("selected"));
+      generatePdfBtn.disabled = true;
+    } else {
+      // generate mode -> allow PDF generation
+      generatePdfBtn.disabled = false;
+    }
   });
+
 
 
   async function loadExistingItems() {

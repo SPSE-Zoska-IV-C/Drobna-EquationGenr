@@ -111,8 +111,17 @@ class Mixed_methods(Method):
             right_expr = sp.log(sp.log(right_expr + k, base), base)
 
         self.equation = sp.Eq(left_expr, right_expr)
+        self.steps.append(r"\log_b(x^n) = n\log_b(x)")
+        self.steps.append('\n')
+        self.steps.append(r"\log_b\left(\frac{x}{y}\right) = \log_b(x) - \log_b(y)")
+        self.steps.append('\n')
+        self.steps.append(r"\log_b(xy) = \log_b(x) + \log_b(y)")
+        self.steps.append('\n')
+        self.steps.append(sp.latex('Logarithm rules:'))
+        self.steps.append('\n')
         self.steps.append(sp.latex(self.equation))
         self.steps.append('\n')
+
 
     def get_equation(self):
         return sp.latex(self.equation)
@@ -154,7 +163,7 @@ class Substitution(Method):
         self.steps.append('\n')
         self.steps.append(rf"a = {self.val_a}")
         self.steps.append('\n')
-        self.steps.append(quad_eq)
+        self.steps.append(sp.latex(quad_eq))
         self.steps.append('\n')
         self.steps.append(sp.latex(sp.Eq(sp.Symbol('t'), sp.log(sp.symbols('x'), sp.symbols(f'{self.val_r}')))))
         self.steps.append('\n')

@@ -7,98 +7,189 @@
 
   <!-- WELCOME CARD -->
   <section class="home-card welcome-card">
-    <h1>Welcome to ExpoLoGen!</h1> 
+    <h1>Welcome to ExpoLoGen!</h1>
+    <br>
     <br>
     <p class="welcome-text">
-      ExpoLoGen is a powerful tool for generating, exploring, and exporting
-      mathematical equations and functions.  
-      Whether you’re studying, teaching, or documenting math, ExpoLoGen helps
-      you turn ideas into clean, export-ready results.
+      ExpoLoGen is a smart and practical web app designed to help you generate, explore, and work with <strong>
+        exponential </strong> and
+      <strong> logarithmic </strong> equations and functions in a fast and organized way. Whether you’re a student
+      preparing for practice,
+      a teacher building worksheets, or just revising key topics, ExpoLoGen gives you everything you need in one place.
     </p>
+    <br>
+    <p class="welcome-text">
+      With ExpoLoGen, you can easily generate new problems, view your saved history, and open detailed function views to
+      better understand how the graphs behave. When you’re ready, you can export your selected content into a clean
+      <strong>PDF
+        worksheet</strong> using built-in export templates — and you can preview <strong>Template 1</strong> and
+      <strong>Template 2</strong> examples right below on
+      this page.
+    </p>
+    <br>
+    <p class="welcome-text">
+      If you’re not sure where to start, scroll down to the <strong>User Guide</strong> at the bottom of the site for a
+      quick
+      step-by-step walkthrough of the main features.
+    </p>
+    <p class="welcome-text">
+      <strong>Note: all the functions and equations containing logarithms are using this rule: </strong> 
+    </p>
+    <p>$$ \log_b(x) = \frac{\log(x)}{\log(b)} $$</p>
   </section>
 
   <!-- USER GUIDE -->
-  <section class="home-card guide-card">
-    <h2>User Guide</h2>
-
-    <!-- Tabs -->
-    <div class="guide-tabs">
-      <button class="guide-tab active" data-tab="generate">Generate</button>
-      <button class="guide-tab" data-tab="export">Export PDF</button>
-      <button class="guide-tab" data-tab="functions">Functions</button>
-      <button class="guide-tab" data-tab="details">Function Details</button>
-      <button class="guide-tab" data-tab="equations">Equations</button>
-    </div>
-
-    <!-- Tab content -->
-    <div class="guide-content">
-
-      <div class="guide-panel active" id="generate">
-        <p>
-          Create equations and functions instantly using ExpoLoGen’s generators.
-        </p>
-
-        <div class="guide-images">
-          <img src="{{ url_for('static', filename='images/generate-sidebar-eng.png') }}" alt="sidebar" class= 'image-placeholder'>
-          <img src="{{ url_for('static', filename='images/Generate-eq-en.png') }}" alt="generate" class= 'image-placeholder'>
-        </div>
-      </div>
-
-      <div class="guide-panel" id="export">
-        <p>
-          Export your work into clean, professional PDF documents.
-        </p>
-
-        <div class="guide-images">
-          <div class="template-placeholder">PDF Template A</div>
-          <div class="template-placeholder">PDF Template B</div>
-        </div>
-      </div>
-
-      <div class="guide-panel" id="functions">
-        <p>
-          Browse and manage generated mathematical functions.
-        </p>
-        <div class="guide-images">
-          <div class="image-placeholder">Functions view</div>
-        </div>
-      </div>
-
-      <div class="guide-panel" id="details">
-        <p>
-          Dive deeper into each function with detailed views and explanations.
-        </p>
-        <div class="guide-images">
-          <div class="image-placeholder">Details view</div>
-        </div>
-      </div>
-
-      <div class="guide-panel" id="equations">
-        <p>
-          View and organize generated equations in one place.
-        </p>
-        <div class="guide-images">
-          <div class="image-placeholder">Equations view</div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
   <section class="template-section">
 
     <div class="template-card">
       <h1>Template 1</h1>
       <img src="{{ url_for('static', filename='images/template-1.png') }}" class="template-image">
     </div>
-  
+
     <div class="template-card">
       <h1>Template 2</h1>
       <img src="{{ url_for('static', filename='images/template-2.png') }}" class="template-image">
     </div>
-  
   </section>
-  
+  <!-- Tab content -->
+
+
+  <section class="home-card guide-card">
+    <h2>User Guide</h2>
+
+    <!-- Tabs -->
+    <div class="guide-tabs">
+      <button class="guide-tab active" data-tab="generate">Generate</button>
+      <button class="guide-tab" data-tab="equations">Equations</button>
+      <button class="guide-tab" data-tab="functions">Functions</button>
+      <button class="guide-tab" data-tab="details">Function Details</button>
+      <button class="guide-tab" data-tab="export">Export PDF</button>
+
+      
+    </div>
+
+    <div class="guide-content">
+
+      <div class="guide-panel active" id="generate">
+        <p>
+          In the sidebar, you will find the <strong>Generate</strong> section. When you hover over it, two options
+          appear: <strong>Equations</strong> and <strong>Functions</strong>. Click the one you want to generate, and the
+          corresponding
+          generation page will open.
+          <br>
+          <br>
+          Depending on your selection:
+          <br>
+          <strong>Equations:</strong> choose the type and difficulty level.
+          <br>
+          <strong>Functions:</strong> choose the type only.
+          <br>
+          <br>
+          Next, enter the <strong>number of items</strong> you want to generate. This must be a <strong>positive
+            integer</strong>.
+          <br>
+          When you are satisfied with your selections, click the <strong>Create</strong> button to generate your
+          equations or functions.
+        </p>
+
+        <div class="guide-images">
+          <img src="{{ url_for('static', filename='images/generate-sidebar-eng.png') }}" alt="sidebar"
+            class='image-placeholder'>
+          <img src="{{ url_for('static', filename='images/Generate-eq-en.png') }}" alt="generate"
+            class='image-placeholder'>
+        </div>
+      </div>
+
+      <div class="guide-panel" id="export">
+        <p>
+          On the right side of the header, you will see the <strong>Export to PDF</strong> button. Click it to open the
+          export form, which contains three dropdowns and one input field:
+          <br>
+          <br>
+          <strong>Type of Content:</strong> choose either Equations or Functions.
+          <br>
+          <strong>Template:</strong> select the desired PDF template.
+          <br>
+          <strong>Amount:</strong> enter the number of items you want to export - but it has to be <strong>maximum of 20 items</strong>.
+          <br>
+          <strong>Source:</strong> choose where the content comes from.
+          <br>
+          <br>
+          If you select <strong>Generate New</strong>, a small generation form will appear below with your chosen
+          parameters prefilled.
+          If you select <strong>Pick From Existing</strong>, a card will appear showing all previously generated items.
+          Choose the items
+          you want to include.
+          <br>
+          Finally, click <strong>Generate PDF</strong> to create your export.
+        </p>
+
+        <div class="guide-images">
+          <img src="{{ url_for('static', filename='images/Export1form-en.png') }}" class="template-placeholder">
+          <img src="{{ url_for('static', filename='images/Export2-en.png') }}" class="template-placeholder">
+        </div>
+      </div>
+
+      <div class="guide-panel" id="functions">
+        <p>
+          The Functions page is divided into two sections:
+          <br>
+          <br>
+          <strong>Today’s Functions:</strong> shows only functions generated today.
+          <br>
+          <strong>History:</strong> shows all previously generated functions.
+          <br>
+          <br>
+          To view the graph or parameters of a function, click the <strong>Details</strong> button.
+        </p>
+        <div class="guide-images">
+          <img src="{{ url_for('static', filename='images/Functions-en.png') }}" class="image-placeholder">
+        </div>
+      </div>
+
+      <div class="guide-panel" id="details">
+        <p>
+          After clicking <strong>Details</strong>, you will see the <strong>Function Details</strong> page for the
+          selected function. Here you can view:
+          <br>
+          <br>
+          The <strong>formula</strong> of the function.
+          <br>
+          Its <strong>type</strong> and parameters.
+          <br>
+          The <strong>graph</strong> of the function.
+          <br>
+          <br>
+          The <strong>inverse graph and formula</strong> of the function (displayed below the main graph).
+        </p>
+        <div class="guide-images">
+          <img src="{{ url_for('static', filename='images/function-details-en.png') }}" class="template-placeholder">
+          <img src="{{ url_for('static', filename='images/function_details2-en.png') }}" class="template-placeholder">
+        </div>
+      </div>
+
+      <div class="guide-panel" id="equations">
+        <p>
+          The Equations page works similarly to Functions. It is divided into:
+          <br>
+          <br>
+          <strong>Today’s Equations:</strong> displays only equations generated today.
+          <br>
+          <strong>History:</strong> displays previously generated equations.
+          <br>
+          <br>
+          Each equation card shows the parameters used during generation. To view the <strong>solving steps</strong> and <strong>roots</strong>, click the
+          <strong>“v”</strong> symbol on the right side of the card.
+        </p>
+        <div class="guide-images">
+          <img src="{{ url_for('static', filename='images/equations-en.png') }}" class="image-placeholder">
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
 
 </div>
 
